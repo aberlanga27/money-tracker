@@ -9,7 +9,7 @@ export function TransactionTable({ transactions }) {
                 <thead>
                     <tr className="bg-primary text-white">
                         <th className="p-2">Date</th>
-                        <th className="p-2">Account</th>
+                        <th className="p-2">Bank</th>
                         <th className="p-2">Category</th>
                         <th className="p-2">Description</th>
                         <th className="p-2">Amount</th>

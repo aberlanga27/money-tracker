@@ -18,7 +18,7 @@ export function useBudget({ transactionsPerCategory }) {
 
     useEffect(() => {
         getBudgets()
-    }, [getBudgets])
+    }, [])
 
     useEffect(() => {
         const usedOnTransactions = transactionsPerCategory.reduce((acc, category) => acc + category.totalAmount, 0)
