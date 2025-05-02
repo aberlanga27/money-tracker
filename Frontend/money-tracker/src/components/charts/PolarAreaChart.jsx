@@ -11,6 +11,7 @@ export function PolarAreaChart({ data = [], labels = [] }) {
         stroke: {
             colors: ['#fff']
         },
+        colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#546E7A', '#26a69a', '#D10CE8', '#FF9800', '#FF5722', '#00BCD4', '#607D8B'],
         fill: {
             opacity: 0.8
         },

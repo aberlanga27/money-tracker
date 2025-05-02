@@ -69,8 +69,8 @@ export default function HomePage() {
 
                 <div className="grid grid-cols-3 gap-1">
                     <InfoCard title={'Budget'} value={overallBudget} />
-                    <InfoCard title={'Available'} value={freeBudget} />
                     <InfoCard title={'Used'} value={usedBudget} />
+                    <InfoCard title={'Available'} value={freeBudget} />
                 </div>
             </section>
 
