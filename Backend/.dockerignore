@@ -1,0 +1,10 @@
+bin
+obj
+*.sln
+*.suo
+*.user
+.vs
+.vscode
+.DS_Store
+
+MoneyTracker.MS/MoneyTracker.Test/Sonarqube

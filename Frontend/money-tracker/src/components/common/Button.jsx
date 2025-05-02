@@ -1,0 +1,23 @@
+export function Button({ children, onClick, className = "", type = "button" }) {
+    return (
+        <button
+            type={type}
+            onClick={onClick}
+            className={`bg-primary text-white p-2 shadow-lg rounded-lg hover:bg-primary/80 transition duration-300 flex items-center justify-center cursor-pointer ${className}`}
+        >
+            {children}
+        </button>
+    );
+}
+
+export function PlainButton({ children, onClick, className = "", type = "button" }) {
+    return (
+        <button
+            type={type}
+            onClick={onClick}
+            className={`border-primary text-primary p-2 shadow-lg rounded-lg hover:bg-primary/20 transition duration-300 flex items-center justify-center cursor-pointer ${className}`}
+        >
+            {children}
+        </button>
+    );
+}

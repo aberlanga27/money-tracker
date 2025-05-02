@@ -1,0 +1,13 @@
+services:
+    database:
+        image: mcr.microsoft.com/azure-sql-edge:latest
+        container_name: moneytracker-database
+        environment:
+            TZ: "Etc/GMT-6"
+            ACCEPT_EULA: "Y"
+            MSSQL_SA_PASSWORD: "Pass123*"
+        ports:
+            - "1433:1433"
+        volumes:
+            - ./Database/Backup:/var/opt/mssql # mkdir Database/Backup && sudo chmod -R 777 Database/Backup
+        restart: unless-stopped

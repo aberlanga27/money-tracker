@@ -1,0 +1,34 @@
+{
+    "Example": "Example",
+    "Bank": "Bank",
+	"Budget": "Budget",
+	"BudgetType": "BudgetType",
+	"Transaction": "Transaction",
+	"TransactionCategory": "TransactionCategory",
+	"TransactionType": "TransactionType",
+	// CTX: locale entity-name, do not remove this line
+
+    "Entity created": "{0} created",
+    "Entity deleted": "{0} deleted",
+    "Entity updated": "{0} updated",
+    "Entities found" : "{0} found",
+    "Entity found" : "{0} found",
+    "Entity found in cache" : "{0} found in cache",
+    "Field cannot be duplicated" : "Field {0} cannot be duplicated",
+    "Fields cannot be duplicated" : "Fields {0} and {1} cannot be duplicated",
+    "Entity not found" : "{0} not found",
+    "Entity has child dependencies" : "Entity {0} has child dependencies",
+
+    "Echo": "Echo",
+    "Running in Docker": "Running in Docker",
+    "Running in Localhost": "Running in Localhost",
+    "but database is not connected": "but database is not connected",
+    "server date time is": "server date time is",
+
+    "Invalid Id, it can't be null or less than 0" : "Invalid Id, it can't be null or less than 0",
+    "Invalid data, verify the fields" : "Invalid data, verify the fields",
+    "Invalid search, it can't be null or empty" : "Invalid search, it can't be null or empty",
+
+    "Unauthorized": "Unauthorized",
+    "Please provide a valid token": "Please provide a valid token"
+}
