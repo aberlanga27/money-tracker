@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { api } from "../boot/axios"
 
 export function useBudget({ transactionsPerCategory }) {
@@ -8,13 +8,17 @@ export function useBudget({ transactionsPerCategory }) {
     const [freeBudget, setFreeBudget] = useState(0)
     const [usedBudget, setUsedBudget] = useState(0)
 
-    useEffect(() => {
+    const getBudgets = useCallback(() => {
         api.get('/Budget')
             .then(({ data }) => {
                 setBudgetsPerCategory(data.response)
             })
-            .catch(error => console.error('Error fetching budgets by category:', error))
-    }, [])
+            .catch(error => console.error('Error fetching budgets:', error))
+    }, [setBudgetsPerCategory])
+
+    useEffect(() => {
+        getBudgets()
+    }, [getBudgets])
 
     useEffect(() => {
         const usedOnTransactions = transactionsPerCategory.reduce((acc, category) => acc + category.totalAmount, 0)

@@ -35,11 +35,11 @@ export function useTransactions() {
     useEffect(() => {
         getTransactions()
         getTransactionsPerCategory()
-    }, [])
+    }, [getTransactions, getTransactionsPerCategory])
 
     useEffect(() => {
         getTransactionsPerCategory()
-    }, [transactions])
+    }, [transactions, getTransactionsPerCategory])
 
     useEffect(() => {
         setTransactionsPerCategoryData(transactionsPerCategory.map((category) => category.totalAmount))
