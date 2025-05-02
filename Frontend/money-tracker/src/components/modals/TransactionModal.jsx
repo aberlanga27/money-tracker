@@ -19,11 +19,11 @@ export function TransactionModal({ show, onClose, onOk }) {
         }
 
         addTransaction({
-            date,
-            category,
-            account,
-            description,
-            amount: parseFloat(amount),
+            transactionDate: date,
+            transactionCategoryName: category,
+            bankName: account,
+            transactionDescription: description,
+            transactionAmount: parseFloat(amount),
         });
 
         if (onOk) onOk();
