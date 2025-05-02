@@ -1,11 +1,7 @@
 import { createContext, useState } from "react";
 
-// is a way to create a global context state
-
-// the one that is used to get the context
 export const TransactionsContext = createContext()
 
-// the one that provides the context
 export function TransactionsProvider({ children }) {
     const [transactions, setTransactions] = useState([])
 
