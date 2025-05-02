@@ -6,8 +6,8 @@ export function useTransactions() {
     const { transactions, setInitialTransactions } = useContext(TransactionsContext)
     const [transactionsPerCategory, setTransactionsPerCategory] = useState([])
 
-    const [data, setData] = useState([])
-    const [labels, setLabels] = useState([])
+    const [transactionsPerCategoryData, setTransactionsPerCategoryData] = useState([])
+    const [transactionsPerCategoryLabels, setTransactionsPerCategoryLabels] = useState([])
 
     useEffect(() => {
         api.get('/Transaction')
@@ -33,14 +33,14 @@ export function useTransactions() {
     }, [])
 
     useEffect(() => {
-        setData(transactionsPerCategory.map((category) => category.totalAmount))
-        setLabels(transactionsPerCategory.map((category) => category.transactionCategoryName))
+        setTransactionsPerCategoryData(transactionsPerCategory.map((category) => category.totalAmount))
+        setTransactionsPerCategoryLabels(transactionsPerCategory.map((category) => category.transactionCategoryName))
     }, [transactionsPerCategory])
 
     return {
         transactions,
         transactionsPerCategory,
-        data,
-        labels
+        transactionsPerCategoryData,
+        transactionsPerCategoryLabels,
     }
 }

@@ -5,8 +5,18 @@ import { useTransactions } from "../hooks/useTransactions";
 import { useBudget } from "../hooks/useBudget";
 
 export default function HomePage() {
-    const { transactions, transactionsPerCategory, labels, data } = useTransactions()
-    const { overallBudget, freeBudget, usedBudget } = useBudget({ transactionsPerCategory })
+    const {
+        transactions,
+        transactionsPerCategory,
+        transactionsPerCategoryData,
+        transactionsPerCategoryLabels
+    } = useTransactions()
+    
+    const {
+        overallBudget,
+        freeBudget,
+        usedBudget
+    } = useBudget({ transactionsPerCategory })
 
     return (
         <>
@@ -26,8 +36,8 @@ export default function HomePage() {
 
                     <div className="flex justify-center items-center">
                         <PolarAreaChart
-                            data={data}
-                            labels={labels}
+                            data={transactionsPerCategoryData}
+                            labels={transactionsPerCategoryLabels}
                         />
                     </div>
                 </section>
