@@ -31,7 +31,12 @@ export default function HomePage() {
                 </div>
             </section>
             
-            {/* <IndexedSelect endpoint={'Bank'} label={'Banks'} optionLabel={'bankName'} optionValue={'bankId'} defaultValue={1} /> */}
+            <IndexedSelect
+                endpoint={'Bank'} label={'Banks'} optionLabel={'bankName'} optionValue={'bankId'}
+                defaultValue={1}
+                onChange={({ value, label, option }) => console.log(value, label, option)}
+                onClear={() => console.log('clear')}
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
                 <section className="budgetting-chart">

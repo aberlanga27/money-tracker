@@ -1,13 +1,21 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useId, useState } from "react";
 import { api } from "../../boot/axios";
 import './IndexedSelect.css';
+
+// TODOS:
+//  - Add loading state
+//  - Add Notify utility on errors
+//  - Add color prop and use colors definided on the main palette
+//  - Add documentation to component
+//  - Add support to esc key to close the dropdown
+//  - Add support arrows and enter keys to navigate the dropdown
 
 export function IndexedSelect({
     endpoint,
     label,
     optionValue,
     optionLabel,
-    customOptionLabel,
+    customOptionLabel = null,
     defaultValue,
     debounce = 500,
     width = "100%",
@@ -15,18 +23,26 @@ export function IndexedSelect({
     onChange = () => { },
     onClear = () => { },
 }) {
+    const uniqueId = useId();
+
     const [selectedOption, setSelectedOption] = useState(null);
 
     const [options, setOptions] = useState([]);
     const [fallbackOptions, setFallbackOptions] = useState([]);
 
     const [search, setSearch] = useState("");
+    const [displaySearch, setDisplaySearch] = useState("");
 
     // ...
 
     const fetchOptions = async () => {
         await api.get(`/${endpoint}`)
             .then(({ data }) => {
+                if (!data.status) {
+                    console.error("Error fetching options:", data.message);
+                    return;
+                }
+
                 setOptions(data.response);
                 setFallbackOptions(data.response);
             })
@@ -39,10 +55,14 @@ export function IndexedSelect({
 
         await api.get(`/${endpoint}/${defaultValue}`)
             .then(({ data }) => {
+                if (!data.status) {
+                    console.error("Error fetching default value:", data.message);
+                    return;
+                }
+
                 setOptions([data.response, ...options]);
                 setFallbackOptions([data.response, ...fallbackOptions]);
-                setSelectedOption(data.response[optionValue]);
-                setSearch(data.response[optionLabel]);
+                handleSelectedOption(data.response);
             })
             .catch((error) => console.error("Error fetching default value:", error));
     }
@@ -62,35 +82,39 @@ export function IndexedSelect({
             .catch((error) => console.error("Error searching options:", error));
     }, [endpoint, search, fallbackOptions]);
 
-    const handleFocusOnInput = () => {
-        const optionsContainer = document.querySelector(".selectable-options");
+    const focusOnDropdown = () => {
+        const optionsContainer = document.querySelector(`#${uniqueId} .selectable-options`);
         optionsContainer.classList.add("visible");
 
-        const optionsArrow = document.querySelector(".selectable-options-arrow");
+        const optionsArrow = document.querySelector(`#${uniqueId} .selectable-options-arrow`);
         optionsArrow.classList.add("rotate");
     }
 
-    const handleBlurOnInput = () => {
-        const optionsContainer = document.querySelector(".selectable-options");
+    const blurOnDropdown = () => {
+        const optionsContainer = document.querySelector(`#${uniqueId} .selectable-options`);
         optionsContainer.classList.remove("visible");
 
-        const optionsArrow = document.querySelector(".selectable-options-arrow");
+        const optionsArrow = document.querySelector(`#${uniqueId} .selectable-options-arrow`);
         optionsArrow.classList.remove("rotate");
     }
 
     const handelClearSelected = () => {
-        setSearch("");
+        setDisplaySearch("");
         setSelectedOption(null);
-        setOptions(fallbackOptions);
 
+        setOptions(fallbackOptions);
         onClear();
     }
 
     const handleSelectedOption = (option) => {
-        setSearch(option[optionLabel]);
+        setDisplaySearch(option[optionLabel]);
         setSelectedOption(option[optionValue]);
 
-        onChange(option[optionValue]);
+        onChange({
+            value: option[optionValue],
+            label: option[optionLabel],
+            option
+        });
     }
 
     // ...
@@ -114,17 +138,22 @@ export function IndexedSelect({
 
     return (
         <div
+            id={uniqueId}
             className="flex flex-col gap-2 selectable-options-container"
             style={{ width, minWidth }}
-            onFocus={handleFocusOnInput}
-        // onBlur={handleBlurOnInput}
+            onFocus={focusOnDropdown}
+            onBlur={blurOnDropdown}
         >
             <input
                 type="text"
                 placeholder={`Search ${label}`}
                 className="p-2 border border-gray-300 rounded-lg"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={displaySearch}
+                onClick={focusOnDropdown}
+                onChange={(e) => {
+                    setSearch(e.target.value);
+                    setDisplaySearch(e.target.value);
+                }}
             />
 
             <div className="cursor-pointer absolute text-gray-500 right-2 top-2">
@@ -136,18 +165,23 @@ export function IndexedSelect({
                 <span className="material-icons selectable-options-arrow">arrow_drop_down</span>
             </div>
 
-            <div className="selectable-options">
+            <div className="selectable-options" onMouseDown={(e) => e.preventDefault()}>
                 {
-                    options?.map((option) => (
-                        <div
-                            key={option[optionValue]}
-                            id={`option-${option[optionValue]}`}
-                            className={`option ${selectedOption === option[optionValue] ? "selected" : ""}`}
-                            onClick={() => handleSelectedOption(option)}
-                        >
-                            {customOptionLabel ? customOptionLabel(option) : option[optionLabel]}
-                        </div>
-                    ))
+                    options?.length > 0
+                        ? options.map((option) => (
+                            <div
+                                key={option[optionValue]}
+                                id={`option-${option[optionValue]}`}
+                                className={`option ${selectedOption === option[optionValue] ? "selected" : ""}`}
+                                onClick={() => {
+                                    handleSelectedOption(option);
+                                    blurOnDropdown();
+                                }}
+                            >
+                                {customOptionLabel ? customOptionLabel(option) : option[optionLabel]}
+                            </div>
+                        ))
+                        : <div className="no-options">No options found</div>
                 }
             </div>
         </div>
