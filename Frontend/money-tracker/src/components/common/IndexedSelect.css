@@ -1,0 +1,81 @@
+/* <div className="flex flex-col gap-2">
+            <input
+                type="text"
+                placeholder={`Search ${label}`}
+                className="p-2 border border-gray-300 rounded-lg"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+            />
+            <div className="selectable-options">
+                {
+                    options?.map((option) => (
+                        <div
+                            key={option[optionValue]}
+                            className={`option ${selectedOption === option[optionValue] ? "selected" : ""}`}
+                            onClick={() => handleSelectedOption(option)}
+                        >
+                            {customOptionLabel ? customOptionLabel(option) : option[optionLabel]}
+                        </div>
+                    ))
+                }
+            </div>
+        </div> */
+
+.selectable-options-container {
+    position: relative;
+}
+
+.selectable-options {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin-top: 5px;    
+    z-index: 1000;
+}
+
+.selectable-options.visible {
+    display: block;
+}
+
+.option {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.option:hover {
+    background-color: #f0f0f0;
+}
+
+.option.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.option.selected:hover {
+    background-color: #0056b3;
+}
+
+.selectable-options-arrow {
+    transition: all 0.3s;
+
+    &.rotate {
+        transform: rotate(180deg);
+    }
+}
+
+.selectable-options-close {
+    transition: all 0.3s;
+
+    &:hover {
+        color: #ff0000;
+    }
+}

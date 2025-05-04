@@ -6,12 +6,12 @@ export function TransactionsProvider({ children }) {
     const [transactions, setTransactions] = useState([])
 
     const setInitialTransactions = (initialTransactions) => {
-        console.log("Setting initial transactions:", initialTransactions)
+        // console.log("Setting initial transactions:", initialTransactions)
         setTransactions(initialTransactions)
     }
 
     const addTransaction = (transaction) => {
-        console.log("Adding transaction:", transaction)
+        // console.log("Adding transaction:", transaction)
         setTransactions((prevTransactions) => [
             transaction,
             ...prevTransactions,
@@ -19,7 +19,7 @@ export function TransactionsProvider({ children }) {
     }
 
     const clearTransactions = () => {
-        console.log("Clearing transactions")
+        // console.log("Clearing transactions")
         setTransactions([])
     }
 

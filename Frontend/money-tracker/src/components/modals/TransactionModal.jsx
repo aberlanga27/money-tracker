@@ -33,20 +33,22 @@ export function TransactionModal({ show, onClose, onOk }) {
             transactionAmount: parseFloat(amount),
         });
 
+        // todo: add transaction to the backend
+
         if (onOk) onOk();
     };
 
     useEffect(() => {
         api.get('/Bank')
             .then(({ data }) => {
-                console.log(data.response)
+                // console.log(data.response)
                 setBanks(data.response)
             })
             .catch((error) => console.error("Error fetching banks:", error));
 
         api.get('/TransactionCategory')
             .then(({ data }) => {
-                console.log(data.response)
+                // console.log(data.response)
                 setCategories(data.response)
             })
             .catch((error) => console.error("Error fetching categories:", error));

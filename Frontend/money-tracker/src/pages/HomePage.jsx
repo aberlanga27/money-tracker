@@ -3,6 +3,7 @@ import { PolarAreaChart } from "../components/charts/PolarAreaChart";
 import { TransactionTable } from "../components/tables/TransactionTable";
 import { useTransactions } from "../hooks/useTransactions";
 import { useBudget } from "../hooks/useBudget";
+import { IndexedSelect } from "../components/common/IndexedSelect";
 
 export default function HomePage() {
     const {
@@ -29,6 +30,8 @@ export default function HomePage() {
                     <InfoCard title={'Available'} value={freeBudget} />
                 </div>
             </section>
+            
+            {/* <IndexedSelect endpoint={'Bank'} label={'Banks'} optionLabel={'bankName'} optionValue={'bankId'} defaultValue={1} /> */}
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
                 <section className="budgetting-chart">
