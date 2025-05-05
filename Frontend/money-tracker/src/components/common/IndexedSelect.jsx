@@ -1,9 +1,9 @@
 import './IndexedSelect.css';
 import { api } from "../../boot/axios";
 import { useCallback, useEffect, useId, useState } from "react";
+import { notifyError } from '../../utils/notify';
 
 // TODOS:
-//  - Add Notify utility on errors
 //  - Add support to esc key to close the dropdown
 //  - Add support arrows and enter keys to navigate the dropdown
 
@@ -27,8 +27,8 @@ import { useCallback, useEffect, useId, useState } from "react";
     <IndexedSelect
         endpoint={'Bank'} label={'Banks'} optionLabel={'bankName'} optionValue={'bankId'}
         defaultValue={1}
-        onChange={({ value, label, option }) => console.log(value, label, option)}
-        onClear={() => console.log('clear')}
+        onChange={({ value, label, option }) => {}}
+        onClear={() => {}}
     />
 */
 export function IndexedSelect({
@@ -63,14 +63,14 @@ export function IndexedSelect({
         await api.get(`/${endpoint}`)
             .then(({ data }) => {
                 if (!data.status) {
-                    console.error("Error fetching options:", data.message);
+                    notifyError({ message: data.message });
                     return;
                 }
 
                 setOptions(data.response);
                 setFallbackOptions(data.response);
             })
-            .catch((error) => console.error("Error fetching options:", error))
+            .catch((error) => notifyError({ message: error }))
             .finally(() => setLoading(false));
     }
 
@@ -81,7 +81,7 @@ export function IndexedSelect({
         await api.get(`/${endpoint}/${defaultValue}`)
             .then(({ data }) => {
                 if (!data.status) {
-                    console.error("Error fetching default value:", data.message);
+                    notifyError({ message: data.message });
                     return;
                 }
 
@@ -89,7 +89,7 @@ export function IndexedSelect({
                 setFallbackOptions([data.response, ...fallbackOptions]);
                 handleSelectedOption(data.response);
             })
-            .catch((error) => console.error("Error fetching default value:", error));
+            .catch((error) => notifyError({ message: error }))
     }
 
     const searchOptionsOnDatabase = useCallback(async () => {
@@ -106,7 +106,7 @@ export function IndexedSelect({
             .then(({ data }) => {
                 setOptions(data);
             })
-            .catch((error) => console.error("Error searching options:", error))
+            .catch((error) => notifyError({ message: error }))
             .finally(() => setLoading(false));
     }, [endpoint, search, fallbackOptions]);
 
