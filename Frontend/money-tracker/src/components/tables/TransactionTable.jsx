@@ -1,11 +1,18 @@
 import './TransactionTable.css';
 import { currency, date } from "../../utils/formatters";
-import { PlainButton } from '../common/Button';
+import { Pagination } from '../common/Pagination';
+import { useTransactions } from '../../hooks/useTransactions';
 
-export function TransactionTable({ transactions }) {
+export function TransactionTable({ transactions, records }) {
+    const { getPaginatedTransactions } = useTransactions()
+
+    const handlePageChange = ({ page, itemsPerPage }) => {
+        getPaginatedTransactions({ page, itemsPerPage })
+    }
+
     return (
         <div id="transaction-table" className='text-sm'>
-            <table className="w-full table-auto bg-secondary/30 rounded-lg">
+            <table className="w-full table-auto bg-secondary/30 rounded-lg mb-2">
                 <thead>
                     <tr className="bg-primary text-white">
                         <th className="p-2">Date</th>
@@ -30,11 +37,7 @@ export function TransactionTable({ transactions }) {
                 </tbody>
             </table>
 
-            <div className="flex justify-end mt-2">
-                <PlainButton className='px-4 py-2'>
-                    All transactions
-                </PlainButton>
-            </div>
+            <Pagination records={records} itemsPerPage={5} onPrevious={handlePageChange} onNext={handlePageChange} />
         </div>
     );
 }

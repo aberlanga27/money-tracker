@@ -2,14 +2,12 @@ import { useContext } from "react";
 import { TransactionsContext } from "../context/transactions";
 
 export function useTransactions() {
-    const { transactions, addTransaction } = useContext(TransactionsContext)
-
-    const addNewTransaction = (transaction) => {
-        addTransaction(transaction)
-    }
+    const { transactions, records, getPaginatedTransactions, addTransaction } = useContext(TransactionsContext)
 
     return {
         transactions,
-        addNewTransaction
+        records,
+        getPaginatedTransactions,
+        addTransaction
     }
 }

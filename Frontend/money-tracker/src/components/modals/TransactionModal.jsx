@@ -6,7 +6,7 @@ import { notifyWarning } from "../../utils/notify";
 import { useTransactions } from "../../hooks/useTransactions";
 
 export function TransactionModal({ show, onClose, onOk }) {
-    const { addNewTransaction } = useTransactions()
+    const { addTransaction } = useTransactions()
 
     const [description, setDescription] = useState("");
     const [amount, setAmount] = useState("");
@@ -33,7 +33,7 @@ export function TransactionModal({ show, onClose, onOk }) {
         }
 
         const { data } = await api.post("/Transaction", transactionPayload);
-        addNewTransaction({ ...transactionPayload, transactionId: data.response.transactionId });
+        addTransaction({ ...transactionPayload, transactionId: data.response.transactionId });
 
         if (onOk) onOk();
     };

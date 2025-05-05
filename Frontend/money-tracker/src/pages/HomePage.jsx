@@ -6,7 +6,7 @@ import { useBudget } from "../hooks/useBudget";
 import { useTransactionsPerCategory } from "../hooks/useTransactionsPerCategory";
 
 export default function HomePage() {
-    const { transactions } = useTransactions()
+    const { transactions, records } = useTransactions()
 
     const {
         transactionsPerCategory,
@@ -47,7 +47,7 @@ export default function HomePage() {
                 <section id="transactions-list">
                     <h2 className="text-primary font-bold py-1">Last transactions</h2>
 
-                    <TransactionTable transactions={transactions} />
+                    <TransactionTable transactions={transactions} records={records} />
                 </section>
             </div>
         </>

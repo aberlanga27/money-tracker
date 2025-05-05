@@ -1,7 +1,8 @@
-export function Button({ children, onClick, className = "", type = "button" }) {
+export function Button({ children, onClick, disabled = false, className = "", type = "button" }) {
     return (
         <button
             type={type}
+            disabled={disabled}
             onClick={onClick}
             className={`bg-primary text-white p-2 shadow-lg rounded-lg hover:bg-primary/80 transition duration-300 flex items-center justify-center cursor-pointer ${className}`}
         >
@@ -10,10 +11,11 @@ export function Button({ children, onClick, className = "", type = "button" }) {
     );
 }
 
-export function PlainButton({ children, onClick, className = "", type = "button" }) {
+export function PlainButton({ children, onClick, disabled = false, className = "", type = "button" }) {
     return (
         <button
             type={type}
+            disabled={disabled}
             onClick={onClick}
             className={`border-primary text-primary p-2 shadow-lg rounded-lg hover:bg-primary/20 transition duration-300 flex items-center justify-center cursor-pointer ${className}`}
         >

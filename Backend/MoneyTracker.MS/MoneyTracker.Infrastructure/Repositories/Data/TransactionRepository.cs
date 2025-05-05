@@ -60,7 +60,7 @@ public class TransactionRepository(
 
     public virtual IEnumerable<Transaction> GetAllTransactions()
     {
-        return context.Transactions.AsNoTracking();
+        return context.Transactions.AsNoTracking().OrderByDescending(x => x.TransactionDate);
     }
 
     public virtual IEnumerable<Transaction> GetAllTransactions(int pageSize, int offsetSize)
@@ -69,7 +69,7 @@ public class TransactionRepository(
             .Include(x => x.Bank)
             .Include(x => x.TransactionCategory)
             .Include(x => x.TransactionType)
-            .OrderBy(x => x.TransactionId)
+            .OrderByDescending(x => x.TransactionDate)
             .Skip(offsetSize).Take(pageSize);
     }
 
@@ -168,6 +168,7 @@ public class TransactionRepository(
             .Include(x => x.Bank)
             .Include(x => x.TransactionCategory)
             .Include(x => x.TransactionType)
+            .OrderByDescending(x => x.TransactionDate)
             .Where(x =>
                 x.TransactionDescription.Contains(search) ||
                 // CTX: repository-search, do not remove this line
@@ -181,6 +182,7 @@ public class TransactionRepository(
             .Include(x => x.Bank)
             .Include(x => x.TransactionCategory)
             .Include(x => x.TransactionType)
+            .OrderByDescending(x => x.TransactionDate)
             .AsQueryable();
 
         var isByAttributesFilter = false;
