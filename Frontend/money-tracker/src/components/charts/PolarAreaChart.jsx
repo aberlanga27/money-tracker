@@ -28,7 +28,7 @@ export function PolarAreaChart({ data = [], labels = [] }) {
             breakpoint: 2000,
             options: {
                 chart: {
-                    width: 400
+                    width: 350
                 }
             }
         }]
