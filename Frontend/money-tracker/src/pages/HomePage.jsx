@@ -3,14 +3,16 @@ import { PolarAreaChart } from "../components/charts/PolarAreaChart";
 import { TransactionTable } from "../components/tables/TransactionTable";
 import { useTransactions } from "../hooks/useTransactions";
 import { useBudget } from "../hooks/useBudget";
+import { useTransactionsPerCategory } from "../hooks/useTransactionsPerCategory";
 
 export default function HomePage() {
+    const { transactions } = useTransactions()
+
     const {
-        transactions,
         transactionsPerCategory,
         transactionsPerCategoryData,
         transactionsPerCategoryLabels
-    } = useTransactions()
+    } = useTransactionsPerCategory()
 
     const {
         overallBudget,

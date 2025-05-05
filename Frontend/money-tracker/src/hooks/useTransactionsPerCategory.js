@@ -1,0 +1,39 @@
+import { useEffect, useState } from "react";
+import { api } from "../boot/axios";
+
+export function useTransactionsPerCategory() {
+    const [transactionsPerCategory, setTransactionsPerCategory] = useState([])
+
+    const [transactionsPerCategoryData, setTransactionsPerCategoryData] = useState([])
+    const [transactionsPerCategoryLabels, setTransactionsPerCategoryLabels] = useState([])
+
+    const getTransactionsPerCategory = () => {        
+        const today = new Date()
+        let startDate = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0)
+        let endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59)
+
+        api.post('/Transaction/GroupByCategory', {
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString()
+        })
+            .then(({ data }) => {
+                setTransactionsPerCategory(data.response)
+            })
+            .catch(error => console.error('Error fetching transactions by category:', error))
+    }
+
+    useEffect(() => {
+        getTransactionsPerCategory()
+    }, [])
+
+    useEffect(() => {
+        setTransactionsPerCategoryData(transactionsPerCategory.map((category) => category.totalAmount))
+        setTransactionsPerCategoryLabels(transactionsPerCategory.map((category) => category.transactionCategoryName))
+    }, [transactionsPerCategory])
+
+    return {
+        transactionsPerCategory,
+        transactionsPerCategoryData,
+        transactionsPerCategoryLabels
+    }
+}

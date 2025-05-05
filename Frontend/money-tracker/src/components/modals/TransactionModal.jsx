@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BaseModal } from "./BaseModal";
-import { TransactionsContext } from "../../context/transactions";
 import { IndexedSelect } from "../common/IndexedSelect";
 import { api } from "../../boot/axios";
 import { notifyWarning } from "../../utils/notify";
+import { useTransactions } from "../../hooks/useTransactions";
 
 export function TransactionModal({ show, onClose, onOk }) {
-    const { addTransaction } = useContext(TransactionsContext)
+    const { addNewTransaction } = useTransactions()
 
     const [description, setDescription] = useState("");
     const [amount, setAmount] = useState("");
@@ -33,7 +33,7 @@ export function TransactionModal({ show, onClose, onOk }) {
         }
 
         const { data } = await api.post("/Transaction", transactionPayload);
-        addTransaction({ ...transactionPayload, transactionId: data.response.transactionId });
+        addNewTransaction({ ...transactionPayload, transactionId: data.response.transactionId });
 
         if (onOk) onOk();
     };

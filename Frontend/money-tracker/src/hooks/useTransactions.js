@@ -1,51 +1,15 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { TransactionsContext } from "../context/transactions";
-import { api } from "../boot/axios";
 
 export function useTransactions() {
-    const { transactions, setInitialTransactions } = useContext(TransactionsContext)
-    const [transactionsPerCategory, setTransactionsPerCategory] = useState([])
+    const { transactions, addTransaction } = useContext(TransactionsContext)
 
-    const [transactionsPerCategoryData, setTransactionsPerCategoryData] = useState([])
-    const [transactionsPerCategoryLabels, setTransactionsPerCategoryLabels] = useState([])
-
-    const getTransactions = useCallback(() => {
-        api.get('/Transaction')
-            .then(({ data }) => {
-                setInitialTransactions(data.response)
-            })
-            .catch(error => console.error('Error fetching transactions:', error))
-    }, [setInitialTransactions])
-
-    const getTransactionsPerCategory = useCallback(() => {
-        const today = new Date()
-        let startDate = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0)
-        let endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59)
-
-        api.post('/Transaction/GroupByCategory', {
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString()
-        })
-            .then(({ data }) => {
-                setTransactionsPerCategory(data.response)
-            })
-            .catch(error => console.error('Error fetching transactions by category:', error))
-    }, [])
-
-    useEffect(() => {
-        getTransactions()
-        getTransactionsPerCategory()
-    }, [])
-
-    useEffect(() => {
-        setTransactionsPerCategoryData(transactionsPerCategory.map((category) => category.totalAmount))
-        setTransactionsPerCategoryLabels(transactionsPerCategory.map((category) => category.transactionCategoryName))
-    }, [transactionsPerCategory])
+    const addNewTransaction = (transaction) => {
+        addTransaction(transaction)
+    }
 
     return {
         transactions,
-        transactionsPerCategory,
-        transactionsPerCategoryData,
-        transactionsPerCategoryLabels
+        addNewTransaction
     }
 }
