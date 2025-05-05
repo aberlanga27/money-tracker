@@ -19,27 +19,23 @@ export function useTransactions() {
 
     const getTransactionsPerCategory = useCallback(() => {
         const today = new Date()
-        const startDate = new Date(today.getFullYear(), today.getMonth(), 1)
-        const endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+        let startDate = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0)
+        let endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59)
 
         api.post('/Transaction/GroupByCategory', {
-            startDate,
-            endDate,
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString()
         })
             .then(({ data }) => {
                 setTransactionsPerCategory(data.response)
             })
             .catch(error => console.error('Error fetching transactions by category:', error))
-    }, [setTransactionsPerCategory])
+    }, [])
 
     useEffect(() => {
         getTransactions()
         getTransactionsPerCategory()
     }, [])
-
-    useEffect(() => {
-        getTransactionsPerCategory()
-    }, [transactions])
 
     useEffect(() => {
         setTransactionsPerCategoryData(transactionsPerCategory.map((category) => category.totalAmount))
@@ -50,6 +46,6 @@ export function useTransactions() {
         transactions,
         transactionsPerCategory,
         transactionsPerCategoryData,
-        transactionsPerCategoryLabels,
+        transactionsPerCategoryLabels
     }
 }

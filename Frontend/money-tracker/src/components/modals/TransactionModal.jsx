@@ -1,57 +1,51 @@
 import { useContext, useEffect, useState } from "react";
 import { BaseModal } from "./BaseModal";
 import { TransactionsContext } from "../../context/transactions";
+import { IndexedSelect } from "../common/IndexedSelect";
 import { api } from "../../boot/axios";
+import { notifyWarning } from "../../utils/notify";
 
 export function TransactionModal({ show, onClose, onOk }) {
     const { addTransaction } = useContext(TransactionsContext)
 
-    const [categories, setCategories] = useState([]);
-    const [banks, setBanks] = useState([]);
-
     const [description, setDescription] = useState("");
     const [amount, setAmount] = useState("");
     const [date, setDate] = useState("");
-    const [bank, setBank] = useState("");
-    const [category, setCategory] = useState("");
+    const [bank, setBank] = useState(null);
+    const [category, setCategory] = useState(null);
 
-    const handleAddTransaction = () => {
+    const handleAddTransaction = async () => {
         if (description === "" || amount === "" || date === "" || bank === "" || category === "") {
-            alert("Please fill in all fields");
+            notifyWarning({ message: "Please fill all fields" });
             return;
         }
 
-        addTransaction({
-            transactionDate: date,
-            // transactionCategoryId: category.transactionCategoryId,
-            transactionCategoryName: category,
-            // bankId: bank.bankId,
-            bankName: bank,
+        let transactionPayload = {
+            transactionCategoryId: category.transactionCategoryId,
+            transactionCategoryName: category.transactionCategoryName,
             transactionTypeId: 2,
             transactionTypeName: "Expense",
-            transactionDescription: description,
+            bankId: bank.bankId,
+            bankName: bank.bankName,
             transactionAmount: parseFloat(amount),
-        });
+            transactionDate: date,
+            transactionDescription: description,
+        }
 
-        // todo: add transaction to the backend
+        const { data } = await api.post("/Transaction", transactionPayload);
+        addTransaction({ ...transactionPayload, transactionId: data.response.transactionId });
 
         if (onOk) onOk();
     };
 
     useEffect(() => {
-        api.get('/Bank')
-            .then(({ data }) => {
-                // console.log(data.response)
-                setBanks(data.response)
-            })
-            .catch((error) => console.error("Error fetching banks:", error));
-
-        api.get('/TransactionCategory')
-            .then(({ data }) => {
-                // console.log(data.response)
-                setCategories(data.response)
-            })
-            .catch((error) => console.error("Error fetching categories:", error));
+        return () => {
+            setDescription("");
+            setAmount("");
+            setDate("");
+            setBank(null);
+            setCategory(null);
+        }
     }, [])
 
     return (
@@ -84,35 +78,15 @@ export function TransactionModal({ show, onClose, onOk }) {
                     onChange={(e) => setDate(e.target.value)}
                 />
 
-                <select
-                    className="p-2 border border-gray-300 rounded-lg"
-                    value={bank}
-                    onChange={(e) => setBank(e.target.value)}
-                >
-                    <option value="">Select Bank</option>
-                    {
-                        banks.map((bank) => (
-                            <option key={bank.bankId} value={bank.bankId}>
-                                {bank.bankName}
-                            </option>
-                        ))
-                    }
-                </select>
+                <IndexedSelect
+                    endpoint={'Bank'} label={'Banks'} optionLabel={'bankName'} optionValue={'bankId'}
+                    onChange={({ option }) => setBank(option)}
+                />
 
-                <select
-                    className="p-2 border border-gray-300 rounded-lg"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                >
-                    <option value="">Select Category</option>
-                    {
-                        categories.map((category) => (
-                            <option key={category.transactionCategoryId} value={category.transactionCategoryId}>
-                                {category.transactionCategoryName}
-                            </option>
-                        ))
-                    }
-                </select>
+                <IndexedSelect
+                    endpoint={'TransactionCategory'} label={'Categories'} optionLabel={'transactionCategoryName'} optionValue={'transactionCategoryId'}
+                    onChange={({ option }) => setCategory(option)}
+                />
             </div>
         </BaseModal>
     );

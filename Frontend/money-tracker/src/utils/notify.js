@@ -1,4 +1,4 @@
-const baseClasses = 'fixed z-50 pl-4 pr-2 py-2 rounded shadow-lg transition-transform transform duration-300 ease-in-out text-right';
+const baseClasses = 'fixed z-1000 pl-4 pr-2 py-2 rounded shadow-lg transition-transform transform duration-300 ease-in-out text-right';
 const positionClasses = {
     'top-right': 'top-4 right-4',
     'top-left': 'top-4 left-4',
@@ -51,6 +51,17 @@ export function notifyError({ title = 'Error', message = 'Error', position = 'to
         message,
         position,
         type: 'error',
+        textColor: 'white',
+        timeout
+    });
+}
+
+export function notifyWarning({ title = 'Warning', message = 'Warning', position = 'top-right', timeout = 5000 }) {
+    notify({
+        title,
+        message,
+        position,
+        type: 'warning',
         textColor: 'white',
         timeout
     });
