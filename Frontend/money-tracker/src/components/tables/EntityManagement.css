@@ -1,0 +1,57 @@
+.entity-management-table {
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: rgba(0, 0, 0, 0.03);
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    thead {
+        position: sticky;
+        top: 0;
+    }
+
+    tbody {
+        display: block;
+        max-height: 11rem;
+        overflow-y: auto;
+    }
+
+    tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    th, td {
+        padding: 0.5rem;
+        text-align: left;
+    }
+
+    th {
+        font-weight: bold;
+    }
+
+    .filter-pop-up {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.26);
+        z-index: 1000;
+        right: 0;
+        width: 300px;
+
+        .selectors{
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        &.visible {
+            display: block;
+        }
+    }
+}

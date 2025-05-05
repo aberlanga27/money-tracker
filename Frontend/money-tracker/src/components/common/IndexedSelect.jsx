@@ -92,7 +92,7 @@ export function IndexedSelect({
             .catch((error) => notifyError({ message: error }))
     }
 
-    const searchOptionsOnDatabase = useCallback(async () => {
+    const searchOptionsOnDatabase = useCallback(() => {
         const needle = search?.trim().toLowerCase();
 
         if (!needle || needle.length < 3) {
@@ -102,7 +102,7 @@ export function IndexedSelect({
 
         setLoading(true);
 
-        await api.get(`/${endpoint}/Search`, { params: { search: needle } })
+        api.get(`/${endpoint}/Search`, { params: { search: needle } })
             .then(({ data }) => {
                 setOptions(data);
             })

@@ -1,5 +1,5 @@
 const transactionCategories = {
-    tableName: 'TransactionCategory',
+    endpoint: 'TransactionCategory',
     indexKey: 'transactionCategoryId',
     displayName: 'Categories',
     properties: [
@@ -16,7 +16,7 @@ const transactionCategories = {
 }
 
 const transactionTypes = {
-    tableName: 'TransactionType',
+    endpoint: 'TransactionType',
     indexKey: 'transactionTypeId',
     displayName: 'Transaction Types',
     properties: [
@@ -31,7 +31,7 @@ const transactionTypes = {
 }
 
 const banks = {
-    tableName: 'Bank',
+    endpoint: 'Bank',
     indexKey: 'bankId',
     displayName: 'Banks',
     properties: [
@@ -45,7 +45,7 @@ const banks = {
 }
 
 const budgetTypes = {
-    tableName: 'BudgetType',
+    endpoint: 'BudgetType',
     indexKey: 'budgetTypeId',
     displayName: 'Budget Types',
     properties: [
@@ -60,7 +60,7 @@ const budgetTypes = {
 }
 
 const budgets = {
-    tableName: 'Budget',
+    endpoint: 'Budget',
     indexKey: 'budgetId',
     displayName: 'Budgets',
     properties: [
@@ -76,17 +76,17 @@ const budgets = {
 }
 
 const transactions = {
-    tableName: 'Transaction',
+    endpoint: 'Transaction',
     indexKey: 'transactionId',
     displayName: 'Transactions',
     properties: [
         { name: 'transactionId', display: 'ID', type: 'number', required: true },
-        { name: 'transactionCategoryId', display: 'Transaction Category', type: 'select', option: { name: 'TransactionCategory', value: 'transactionCategoryId', label: 'transactionCategoryName' }, required: true },
-        { name: 'transactionTypeId', display: 'Transaction Type', type: 'select', option: { name: 'TransactionType', value: 'transactionTypeId', label: 'transactionTypeName' }, required: true },
+        { name: 'transactionDate', display: 'Date', type: 'date', required: true },
         { name: 'bankId', display: 'Bank', type: 'select', option: { name: 'Bank', value: 'bankId', label: 'bankName' }, required: true },
-        { name: 'transactionAmount', display: 'Transaction Amount', type: 'number', required: true },
-        { name: 'transactionDate', display: 'Transaction Date', type: 'dateTime', required: true },
-        { name: 'transactionDescription', display: 'Transaction Description', type: 'string', min: 1, max: 150, required: true }
+        { name: 'transactionTypeId', display: 'Type', type: 'select', option: { name: 'TransactionType', value: 'transactionTypeId', label: 'transactionTypeName' }, required: true },
+        { name: 'transactionCategoryId', display: 'Category', type: 'select', option: { name: 'TransactionCategory', value: 'transactionCategoryId', label: 'transactionCategoryName' }, required: true },
+        { name: 'transactionAmount', display: 'Amount', type: 'number', format: 'currency', required: true },
+        { name: 'transactionDescription', display: 'Description', type: 'string', min: 1, max: 150, required: true }
     ],
     allowAdd: true,
     allowEdit: true,
@@ -95,6 +95,10 @@ const transactions = {
 }
 
 export const config = [
+    {
+        value: transactions,
+        label: transactions.displayName
+    },
     {
         value: transactionCategories,
         label: transactionCategories.displayName
@@ -114,9 +118,5 @@ export const config = [
     {
         value: budgets,
         label: budgets.displayName
-    },
-    {
-        value: transactions,
-        label: transactions.displayName
     }
 ]
