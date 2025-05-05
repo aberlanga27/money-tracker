@@ -63,6 +63,7 @@ export function AddEditModal({
                                 ? (
                                     <IndexedSelect
                                         endpoint={property.option.name} label={property.display} optionLabel={property.option.label} optionValue={property.option.value}
+                                        defaultValue={formData[property.name] || null}
                                         onChange={({ value }) => handleSelectChange(property.name, value)}
                                     />
                                 ) 
