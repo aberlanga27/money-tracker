@@ -3,7 +3,7 @@ import { currency, date } from "../../utils/formatters";
 import { Pagination } from '../common/Pagination';
 import { useTransactions } from '../../hooks/useTransactions';
 
-export function TransactionTable({ transactions, records }) {
+export function TransactionTable({ transactions, noRecords }) {
     const { getPaginatedTransactions } = useTransactions()
 
     const handlePageChange = ({ page, itemsPerPage }) => {
@@ -37,7 +37,7 @@ export function TransactionTable({ transactions, records }) {
                 </tbody>
             </table>
 
-            <Pagination records={records} itemsPerPage={5} onPrevious={handlePageChange} onNext={handlePageChange} />
+            <Pagination noRecords={noRecords} itemsPerPage={5} onPrevious={handlePageChange} onNext={handlePageChange} />
         </div>
     );
 }

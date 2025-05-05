@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Button } from "./Button";
 
 export function Pagination({
-    records,
+    noRecords,
     itemsPerPage = 10,
     onNext = () => { },
     onPrevious = () => { }
 }) {
     const [currentPage, setCurrentPage] = useState(1);
 
-    const totalPages = Math.ceil(records / itemsPerPage);
+    const totalPages = Math.ceil(noRecords / itemsPerPage);
 
     const handlePrevious = () => {
         if (currentPage > 1) {

@@ -33,7 +33,7 @@ export default function MainLayout() {
             </footer>
 
             <Button
-                className="fixed bottom-16 right-1"
+                className="fixed top-11 right-1"
                 onClick={toggleModal}
             >
                 <span className="material-icons">add</span>

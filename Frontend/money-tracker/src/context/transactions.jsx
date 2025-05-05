@@ -5,7 +5,7 @@ import { notifyError } from "../utils/notify";
 export const TransactionsContext = createContext()
 
 export function TransactionsProvider({ children }) {
-    const [records, setRecords] = useState(0)
+    const [noRecords, setNoRecords] = useState(0)
     const [transactions, setTransactions] = useState([])
 
     const getTransactions = () => {
@@ -17,7 +17,7 @@ export function TransactionsProvider({ children }) {
                 }
 
                 setTransactions(data.response)
-                setRecords(data.totalRecords)
+                setNoRecords(data.totalRecords)
             })
             .catch(error => notifyError(error.message))
     }
@@ -31,7 +31,7 @@ export function TransactionsProvider({ children }) {
                 }
 
                 setTransactions(data.response)
-                setRecords(data.totalRecords)
+                setNoRecords(data.totalRecords)
             })
             .catch(error => notifyError(error.message))
     }
@@ -48,7 +48,7 @@ export function TransactionsProvider({ children }) {
     }, [])
 
     return (
-        <TransactionsContext.Provider value={{ transactions, records, getPaginatedTransactions, addTransaction }}>
+        <TransactionsContext.Provider value={{ transactions, noRecords, getPaginatedTransactions, addTransaction }}>
             {children}
         </TransactionsContext.Provider>
     )
