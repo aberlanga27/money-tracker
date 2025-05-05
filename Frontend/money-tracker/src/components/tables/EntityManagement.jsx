@@ -6,6 +6,7 @@ import { notifyError } from "../../utils/notify";
 import { Pagination } from '../common/Pagination';
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { IndexedSelect } from '../common/IndexedSelect';
+import { AddEditModal } from '../modals/AddEditModal';
 
 export function EntityManagement({
     endpoint,
@@ -25,6 +26,10 @@ export function EntityManagement({
     const [records, setRecords] = useState([]);
     const [fallbackRecords, setFallbackRecords] = useState([]);
     const [noRecords, setNoRecords] = useState(0);
+
+    const [showAddEditModal, setShowAddEditModal] = useState(false);
+    const [recordToEdit, setRecordToEdit] = useState({});
+    const [modalMode, setModalMode] = useState("add");
 
     const displayProperties = useMemo(() => properties.filter(property => property.name !== indexKey), [properties, indexKey]);
     const selectProperties = useMemo(() => properties.filter(property => property.type === 'select'), [properties]);
@@ -113,7 +118,11 @@ export function EntityManagement({
                 />
 
                 <div className="actions flex items-center gap-1">
-                    <Button disabled={!allowAdd}>
+                    <Button disabled={!allowAdd} onClick={() => {
+                        setRecordToEdit({});
+                        setModalMode('add');
+                        setShowAddEditModal(true);
+                    }}>
                         <span className="material-icons" style={{ fontSize: '1rem' }}>
                             add
                         </span>
@@ -137,17 +146,19 @@ export function EntityManagement({
                 <div className='text-primary font-bold'>Filters</div>
                 <div className="selectors">
                     {
-                        selectProperties.map((property) => (
-                            <IndexedSelect
-                                endpoint={property.option.name} label={property.display}
-                                optionLabel={property.option.label} optionValue={property.option.value}
-                                onChange={({ value }) => setFilter({ ...filter, [property.option.value]: value })}
-                                onClear={() => {
-                                    const newFilter = { ...filter };
-                                    delete newFilter[property.option.value];
-                                    setFilter(newFilter);
-                                }}
-                            />
+                        selectProperties.map((property, index) => (
+                            <div key={`${uniqueId}-${index}`} className="filter-selectors">
+                                <IndexedSelect
+                                    endpoint={property.option.name} label={property.display}
+                                    optionLabel={property.option.label} optionValue={property.option.value}
+                                    onChange={({ value }) => setFilter({ ...filter, [property.option.value]: value })}
+                                    onClear={() => {
+                                        const newFilter = { ...filter };
+                                        delete newFilter[property.option.value];
+                                        setFilter(newFilter);
+                                    }}
+                                />
+                            </div>
                         ))
                     }
                 </div>
@@ -186,7 +197,11 @@ export function EntityManagement({
                                         <td className="p-2 flex justify-center items-center gap-1">
                                             {
                                                 allowEdit && (
-                                                    <Button>
+                                                    <Button onClick={() => {
+                                                        setModalMode('edit');
+                                                        setRecordToEdit(record);
+                                                        setShowAddEditModal(true);
+                                                    }}>
                                                         <span className="material-icons" style={{ fontSize: '0.8rem' }}>
                                                             edit
                                                         </span>
@@ -211,7 +226,19 @@ export function EntityManagement({
                 </tbody>
             </table>
 
-            <Pagination noRecords={noRecords} itemsPerPage={5} onPrevious={getRecordsPerPage} onNext={getRecordsPerPage} />
+            <AddEditModal endpoint={endpoint} displayName={displayName} indexKey={indexKey}
+                properties={displayProperties} modalMode={modalMode}
+                show={showAddEditModal}
+                record={recordToEdit}
+                onOk={() => { setShowAddEditModal(false) }}
+                onClose={() => { setShowAddEditModal(false) }}
+            />
+
+            <Pagination
+                noRecords={noRecords}
+                itemsPerPage={5}
+                onPrevious={getRecordsPerPage} onNext={getRecordsPerPage}
+            />
         </div>
     );
 }
