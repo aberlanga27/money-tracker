@@ -1,26 +1,17 @@
 @import "tailwindcss";
+
 :root {
     --primary: #4a90e2;
     --secondary: #d7dce1;
+    --positive: #4caf50;
+    --negative: #f44336;
+    --warning: #ff9800;
 }
 
 @theme {
-    --color-primary: #4a90e2;
-    --color-secondary: #d7dce1;
-}
-
-/* animations */
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-.animate-active {
-    animation: fadeIn 0.5s ease-in-out;
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --color-positive: var(--positive);
+    --color-negative: var(--negative);
+    --color-warning: var(--warning);
 }

@@ -1,15 +1,36 @@
-import { useCallback, useEffect, useId, useState } from "react";
-import { api } from "../../boot/axios";
 import './IndexedSelect.css';
+import { api } from "../../boot/axios";
+import { useCallback, useEffect, useId, useState } from "react";
 
 // TODOS:
-//  - Add loading state
 //  - Add Notify utility on errors
-//  - Add color prop and use colors definided on the main palette
-//  - Add documentation to component
 //  - Add support to esc key to close the dropdown
 //  - Add support arrows and enter keys to navigate the dropdown
 
+/**
+ * @component
+ * Custom select component that fetches options from an API endpoint.
+ * 
+ * @param {string} endpoint - The endpoint to fetch the options from.
+ * @param {string} label - The label to display for the select input.
+ * @param {string} optionValue - The key to use as the value for the options.
+ * @param {string} optionLabel - The key to use as the label for the options.
+ * @param {string} customOptionLabel - A function to customize the label of the options.
+ * @param {string} defaultValue - The default value to set for the select input.
+ * @param {number} debounce - The debounce time in milliseconds for the search input.
+ * @param {string} width - The width of the select input.
+ * @param {string} minWidth - The minimum width of the select input.
+ * @param {function} onChange - A callback function to call when the selected option changes.
+ * @param {function} onClear - A callback function to call when the clear button is clicked.
+ * 
+ * @example
+    <IndexedSelect
+        endpoint={'Bank'} label={'Banks'} optionLabel={'bankName'} optionValue={'bankId'}
+        defaultValue={1}
+        onChange={({ value, label, option }) => console.log(value, label, option)}
+        onClear={() => console.log('clear')}
+    />
+*/
 export function IndexedSelect({
     endpoint,
     label,
@@ -29,6 +50,7 @@ export function IndexedSelect({
 
     const [options, setOptions] = useState([]);
     const [fallbackOptions, setFallbackOptions] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const [search, setSearch] = useState("");
     const [displaySearch, setDisplaySearch] = useState("");
@@ -36,6 +58,8 @@ export function IndexedSelect({
     // ...
 
     const fetchOptions = async () => {
+        setLoading(true);
+
         await api.get(`/${endpoint}`)
             .then(({ data }) => {
                 if (!data.status) {
@@ -46,7 +70,8 @@ export function IndexedSelect({
                 setOptions(data.response);
                 setFallbackOptions(data.response);
             })
-            .catch((error) => console.error("Error fetching options:", error));
+            .catch((error) => console.error("Error fetching options:", error))
+            .finally(() => setLoading(false));
     }
 
     const fetchDefaultValue = async () => {
@@ -75,11 +100,14 @@ export function IndexedSelect({
             return;
         }
 
+        setLoading(true);
+
         await api.get(`/${endpoint}/Search`, { params: { search: needle } })
             .then(({ data }) => {
                 setOptions(data);
             })
-            .catch((error) => console.error("Error searching options:", error));
+            .catch((error) => console.error("Error searching options:", error))
+            .finally(() => setLoading(false));
     }, [endpoint, search, fallbackOptions]);
 
     const focusOnDropdown = () => {
@@ -134,6 +162,15 @@ export function IndexedSelect({
     useEffect(() => {
         fetchOptions();
         fetchDefaultValue();
+
+        return () => {
+            setOptions([]);
+            setFallbackOptions([]);
+            setSelectedOption(null);
+            setLoading(false);
+            setSearch("");
+            setDisplaySearch("");
+        }
     }, [])
 
     return (
@@ -149,6 +186,7 @@ export function IndexedSelect({
                 placeholder={`Search ${label}`}
                 className="p-2 border border-gray-300 rounded-lg"
                 value={displaySearch}
+                disabled={loading}
                 onClick={focusOnDropdown}
                 onChange={(e) => {
                     setSearch(e.target.value);
@@ -159,7 +197,7 @@ export function IndexedSelect({
             <div className="cursor-pointer absolute text-gray-500 right-2 top-2">
                 {
                     selectedOption
-                        ? (<span className="material-icons selectable-options-close text-gray-300" onClick={handelClearSelected}>close</span>)
+                        ? (<span className="material-icons selectable-options-close text-gray-300 hover:text-negative" onClick={handelClearSelected}>close</span>)
                         : ""
                 }
                 <span className="material-icons selectable-options-arrow">arrow_drop_down</span>

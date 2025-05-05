@@ -1,3 +1,6 @@
+@import "../../index.css";
+@import "tailwindcss";
+
 .selectable-options-container {
     position: relative;
 }
@@ -32,12 +35,13 @@
     }
     
     &.selected {
-        background-color: #007bff;
+        @apply bg-primary;
         color: white;
     }
     
     &.selected:hover {
-        background-color: #0056b3;
+        @apply bg-primary/90;
+        color: white;
     }
 }
 
@@ -57,8 +61,4 @@
 
 .selectable-options-close {
     transition: all 0.3s;
-
-    &:hover {
-        color: #ff0000;
-    }
 }
