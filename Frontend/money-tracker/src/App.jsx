@@ -9,6 +9,9 @@ export default function App() {
                 <Route path="/" element={<MainLayout />}>
                     <Route index element={<HomePage />} />
                     <Route path="/calendar" element={<div>Calendar Page</div>} />
+                    <Route path="/stats" element={<div>Stadistics Page</div>} />
+                    <Route path="/accounts" element={<div>Accounts Page</div>} />
+                    <Route path="/transactions" element={<div>Transactions Page</div>} />
                 </Route>
             </Routes>
         </BrowserRouter>
