@@ -1,19 +1,16 @@
 import { InfoCard } from "../components/InfoCard";
 import { PolarAreaChart } from "../components/charts/PolarAreaChart";
-import { TransactionTable } from "../components/tables/TransactionTable";
-import { useTransactions } from "../hooks/useTransactions";
 import { useBudget } from "../hooks/useBudget";
 import { useTransactionsPerCategory } from "../hooks/useTransactionsPerCategory";
 import { EntityManagement } from "../components/tables/EntityManagement";
 import { config } from "../config/entity-management";
 
 export default function HomePage() {
-    const { transactions, noRecords } = useTransactions()
-
     const {
         transactionsPerCategory,
         transactionsPerCategoryData,
-        transactionsPerCategoryLabels
+        transactionsPerCategoryLabels,
+        getTransactionsPerCategory
     } = useTransactionsPerCategory()
 
     const {
@@ -49,8 +46,7 @@ export default function HomePage() {
                 <section id="transactions-list">
                     <h2 className="text-primary font-bold py-1">Last transactions</h2>
 
-                    {/* <TransactionTable transactions={transactions} noRecords={noRecords} /> */}
-                    <EntityManagement {...config[0].value} />
+                    <EntityManagement {...config[0].value} onRecordsModified={getTransactionsPerCategory} />
                 </section>
             </div>
         </>

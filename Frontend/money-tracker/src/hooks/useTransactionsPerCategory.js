@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { notifyError } from "../utils/notify";
 import { api } from "../boot/axios";
 
 export function useTransactionsPerCategory() {
     const [transactionsPerCategory, setTransactionsPerCategory] = useState([])
-
     const [transactionsPerCategoryData, setTransactionsPerCategoryData] = useState([])
     const [transactionsPerCategoryLabels, setTransactionsPerCategoryLabels] = useState([])
 
@@ -19,7 +19,7 @@ export function useTransactionsPerCategory() {
             .then(({ data }) => {
                 setTransactionsPerCategory(data.response)
             })
-            .catch(error => console.error('Error fetching transactions by category:', error))
+            .catch(error => notifyError({ message: 'Error fetching transactions by category:', error }))
     }
 
     useEffect(() => {
@@ -34,6 +34,7 @@ export function useTransactionsPerCategory() {
     return {
         transactionsPerCategory,
         transactionsPerCategoryData,
-        transactionsPerCategoryLabels
+        transactionsPerCategoryLabels,
+        getTransactionsPerCategory
     }
 }

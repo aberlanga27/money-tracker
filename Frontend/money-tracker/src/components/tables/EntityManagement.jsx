@@ -16,7 +16,8 @@ export function EntityManagement({
     allowAdd = false,
     allowEdit = false,
     allowDelete = false,
-    allowMultipleAdd = false
+    allowMultipleAdd = false,
+    onRecordsModified = () => { },
 }) {
     const uniqueId = useId();
 
@@ -119,6 +120,20 @@ export function EntityManagement({
         });
         setShowAddEditModal(false);
     }, [indexKey]);
+
+    const onRecordAction = useCallback((record) => {
+        switch (modalMode) {
+            case 'add':
+                onRecordAdded(record);
+                break;
+            case 'edit':
+                onRecordUpdated(record);
+                break;
+            default:
+                break;
+        }
+        onRecordsModified(record);
+    }, [modalMode, onRecordAdded, onRecordUpdated, onRecordsModified]);
 
     // ...
 
@@ -265,7 +280,7 @@ export function EntityManagement({
                 properties={displayProperties} modalMode={modalMode}
                 show={showAddEditModal}
                 record={recordToEdit}
-                onOk={onRecordAdded}
+                onOk={onRecordAction}
                 onClose={() => { setShowAddEditModal(false) }}
             />
 

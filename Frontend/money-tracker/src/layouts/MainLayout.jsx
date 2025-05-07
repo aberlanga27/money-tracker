@@ -1,13 +1,7 @@
 import { Outlet } from "react-router-dom";
-import { TransactionModal } from "../components/modals/TransactionModal";
-import { Button} from "../components/common/Button";
-import { useState } from "react";
 import Menu from "../components/Menu";
 
 export default function MainLayout() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const toggleModal = () => setIsModalOpen(prev => !prev);
-
     const menuOptions = [
         { label: "Home", path: "/", icon: "home" },
         { label: "Calendar", path: "/calendar", icon: "calendar_month" },
@@ -31,15 +25,6 @@ export default function MainLayout() {
             <footer className="bg-primary text-white p-2.5">
                 <Menu options={menuOptions} />
             </footer>
-
-            <Button
-                className="fixed top-11 right-1"
-                onClick={toggleModal}
-            >
-                <span className="material-icons">add</span>
-            </Button>
-
-            <TransactionModal show={isModalOpen} onOk={toggleModal} onClose={toggleModal} />
         </div>
     );
 }
