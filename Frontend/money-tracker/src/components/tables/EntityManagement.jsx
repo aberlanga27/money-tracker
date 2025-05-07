@@ -1,12 +1,13 @@
 import './EntityManagement.css';
+import { AddEditModal } from '../modals/AddEditModal';
 import { api } from "../../boot/axios";
 import { Button, NegativeButton } from "../common/Button";
+import { ConfirmationModal } from '../modals/ConfirmationModal';
 import { currency, date } from "../../utils/formatters";
+import { IndexedSelect } from '../common/IndexedSelect';
 import { notifyError } from "../../utils/notify";
 import { Pagination } from '../common/Pagination';
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
-import { IndexedSelect } from '../common/IndexedSelect';
-import { AddEditModal } from '../modals/AddEditModal';
 
 export function EntityManagement({
     endpoint,
@@ -28,9 +29,12 @@ export function EntityManagement({
     const [fallbackRecords, setFallbackRecords] = useState([]);
     const [noRecords, setNoRecords] = useState(0);
 
+    const [selectedRecord, setSelectedRecord] = useState({});
+
     const [showAddEditModal, setShowAddEditModal] = useState(false);
-    const [recordToEdit, setRecordToEdit] = useState({});
     const [modalMode, setModalMode] = useState("add");
+
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
     const displayProperties = useMemo(() => properties.filter(property => property.name !== indexKey), [properties, indexKey]);
     const selectProperties = useMemo(() => properties.filter(property => property.type === 'select'), [properties]);
@@ -93,14 +97,19 @@ export function EntityManagement({
 
     const showAddModal = useCallback(() => {
         setModalMode('add');
-        setRecordToEdit({});
+        setSelectedRecord({});
         setShowAddEditModal(true);
     }, []);
 
     const showEditModal = useCallback((record) => {
         setModalMode('edit');
-        setRecordToEdit(record);
+        setSelectedRecord(record);
         setShowAddEditModal(true);
+    }, []);
+
+    const showDeleteModal = useCallback((record) => {
+        setSelectedRecord(record);
+        setShowConfirmationModal(true);
     }, []);
 
     const onRecordAdded = useCallback((record) => {
@@ -120,6 +129,24 @@ export function EntityManagement({
         });
         setShowAddEditModal(false);
     }, [indexKey]);
+
+    const onConfirmationDeleteRecord = useCallback(() => {
+        api.delete(`/${endpoint}/${selectedRecord[indexKey]}`)
+            .then(({ data }) => {
+                if (!data.status) {
+                    notifyError({ message: data.message });
+                    return;
+                }
+
+                setRecords((prevRecords) => prevRecords.filter((record) => record[indexKey] !== selectedRecord[indexKey]));
+                onRecordsModified(selectedRecord);
+            })
+            .catch((error) => notifyError({ message: error }))
+            .finally(() => {
+                setShowConfirmationModal(false);
+                setSelectedRecord({});
+            });
+    }, [endpoint, indexKey, selectedRecord, onRecordsModified]);
 
     const onRecordAction = useCallback((record) => {
         switch (modalMode) {
@@ -147,7 +174,7 @@ export function EntityManagement({
             setSearch("");
             setFilter({});
             setShowAddEditModal(false);
-            setRecordToEdit({});
+            setSelectedRecord({});
             setModalMode("add");
         }
     }, [])
@@ -260,7 +287,7 @@ export function EntityManagement({
                                             }
                                             {
                                                 allowDelete && (
-                                                    <NegativeButton className=''>
+                                                    <NegativeButton onClick={() => {showDeleteModal(record)}}>
                                                         <span className="material-icons" style={{ fontSize: '0.8rem' }}>
                                                             delete
                                                         </span>
@@ -279,9 +306,15 @@ export function EntityManagement({
             <AddEditModal endpoint={endpoint} displayName={displayName} indexKey={indexKey}
                 properties={displayProperties} modalMode={modalMode}
                 show={showAddEditModal}
-                record={recordToEdit}
+                record={selectedRecord}
                 onOk={onRecordAction}
                 onClose={() => { setShowAddEditModal(false) }}
+            />
+
+            <ConfirmationModal title='Delete record' message={`Are you sure you want to delete this record?`}
+                show={showConfirmationModal}
+                onOk = {onConfirmationDeleteRecord}
+                onClose={() => { setShowConfirmationModal(false) }}
             />
 
             <Pagination
