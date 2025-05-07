@@ -66,11 +66,6 @@ export function EntityManagement({
             .catch((error) => notifyError({ message: error }))
     }, [endpoint, search, fallbackRecords]);
 
-    const togleFilterPopUp = useCallback(() => {
-        const filterPopUp = document.querySelector(`#entity-management-${uniqueId} .filter-pop-up`);
-        filterPopUp.classList.toggle('visible');
-    }, [uniqueId]);
-
     const filterRecords = useCallback(() => {
         if (!Object.keys(filter).length) {
             setRecords(fallbackRecords);
@@ -84,10 +79,62 @@ export function EntityManagement({
             .catch((error) => notifyError({ message: error }))
     }, [endpoint, filter, fallbackRecords]);
 
+    const togleFilterPopUp = useCallback(() => {
+        const filterPopUp = document.querySelector(`#entity-management-${uniqueId} .filter-pop-up`);
+        filterPopUp.classList.toggle('visible');
+    }, [uniqueId]);
+
+    const clearFilterProperty = useCallback((property) => {
+        const newFilter = { ...filter };
+        delete newFilter[property.option.value];
+        setFilter(newFilter);
+    }, [filter]);
+
+    const showAddModal = useCallback(() => {
+        setModalMode('add');
+        setRecordToEdit({});
+        setShowAddEditModal(true);
+    }, []);
+
+    const showEditModal = useCallback((record) => {
+        setModalMode('edit');
+        setRecordToEdit(record);
+        setShowAddEditModal(true);
+    }, []);
+
+    const onRecordAdded = useCallback((record) => {
+        setRecords((prevRecords) => [record, ...prevRecords]);
+        setShowAddEditModal(false);
+    }, []);
+
+    const onRecordUpdated = useCallback((record) => {
+        setRecords((prevRecords) => {
+            const index = prevRecords.findIndex((r) => r[indexKey] === record[indexKey]);
+            if (index !== -1) {
+                const updatedRecords = [...prevRecords];
+                updatedRecords[index] = record;
+                return updatedRecords;
+            }
+            return prevRecords;
+        });
+        setShowAddEditModal(false);
+    }, [indexKey]);
+
     // ...
 
     useEffect(() => {
         getRecordsPerPage({ page: 1, itemsPerPage: 5 });
+
+        return () => {
+            setRecords([]);
+            setFallbackRecords([]);
+            setNoRecords(0);
+            setSearch("");
+            setFilter({});
+            setShowAddEditModal(false);
+            setRecordToEdit({});
+            setModalMode("add");
+        }
     }, [])
 
     useEffect(() => {
@@ -118,11 +165,7 @@ export function EntityManagement({
                 />
 
                 <div className="actions flex items-center gap-1">
-                    <Button disabled={!allowAdd} onClick={() => {
-                        setRecordToEdit({});
-                        setModalMode('add');
-                        setShowAddEditModal(true);
-                    }}>
+                    <Button disabled={!allowAdd} onClick={showAddModal}>
                         <span className="material-icons" style={{ fontSize: '1rem' }}>
                             add
                         </span>
@@ -152,11 +195,7 @@ export function EntityManagement({
                                     endpoint={property.option.name} label={property.display}
                                     optionLabel={property.option.label} optionValue={property.option.value}
                                     onChange={({ value }) => setFilter({ ...filter, [property.option.value]: value })}
-                                    onClear={() => {
-                                        const newFilter = { ...filter };
-                                        delete newFilter[property.option.value];
-                                        setFilter(newFilter);
-                                    }}
+                                    onClear={() => clearFilterProperty(property)}
                                 />
                             </div>
                         ))
@@ -184,10 +223,10 @@ export function EntityManagement({
                                         <td key={index} className="p-2">
                                             {
                                                 property.format === 'currency' ? currency(record[property.name]) :
-                                                    property.type === 'number' ? record[property.name] :
-                                                        property.type === 'date' ? date(record[property.name]) :
-                                                            property.type === 'select' ? record[property.option.label] :
-                                                                record[property.name]
+                                                property.type === 'number' ? record[property.name] :
+                                                property.type === 'date' ? date(record[property.name]) :
+                                                property.type === 'select' ? record[property.option.label] :
+                                                record[property.name]
                                             }
                                         </td>
                                     ))
@@ -197,11 +236,7 @@ export function EntityManagement({
                                         <td className="p-2 flex justify-center items-center gap-1">
                                             {
                                                 allowEdit && (
-                                                    <Button onClick={() => {
-                                                        setModalMode('edit');
-                                                        setRecordToEdit(record);
-                                                        setShowAddEditModal(true);
-                                                    }}>
+                                                    <Button onClick={() => showEditModal(record)}>
                                                         <span className="material-icons" style={{ fontSize: '0.8rem' }}>
                                                             edit
                                                         </span>
@@ -230,7 +265,7 @@ export function EntityManagement({
                 properties={displayProperties} modalMode={modalMode}
                 show={showAddEditModal}
                 record={recordToEdit}
-                onOk={() => { setShowAddEditModal(false) }}
+                onOk={onRecordAdded}
                 onClose={() => { setShowAddEditModal(false) }}
             />
 
