@@ -4,8 +4,9 @@ import { api } from "../boot/axios";
 
 export function useTransactionsPerCategory() {
     const [transactionsPerCategory, setTransactionsPerCategory] = useState([])
-    const [transactionsPerCategoryData, setTransactionsPerCategoryData] = useState([])
-    const [transactionsPerCategoryLabels, setTransactionsPerCategoryLabels] = useState([])
+    const [data, setData] = useState([])
+    const [labels, setLabels] = useState([])
+    const [colors, setColors] = useState([])
 
     const getTransactionsPerCategory = () => {        
         const today = new Date()
@@ -27,14 +28,16 @@ export function useTransactionsPerCategory() {
     }, [])
 
     useEffect(() => {
-        setTransactionsPerCategoryData(transactionsPerCategory.map((category) => category.totalAmount))
-        setTransactionsPerCategoryLabels(transactionsPerCategory.map((category) => category.transactionCategoryName))
+        setData(transactionsPerCategory.map((category) => category.totalAmount))
+        setLabels(transactionsPerCategory.map((category) => category.transactionCategoryName))
+        setColors(transactionsPerCategory.map((category) => `#${category.transactionCategoryColor}`))
     }, [transactionsPerCategory])
 
     return {
         transactionsPerCategory,
-        transactionsPerCategoryData,
-        transactionsPerCategoryLabels,
+        transactionsPerCategoryData: data,
+        transactionsPerCategoryLabels: labels,
+        transactionsPerCategoryColors: colors,
         getTransactionsPerCategory
     }
 }

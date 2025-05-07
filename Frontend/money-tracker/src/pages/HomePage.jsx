@@ -1,5 +1,5 @@
 import { InfoCard } from "../components/InfoCard";
-import { PolarAreaChart } from "../components/charts/PolarAreaChart";
+import { DoughnutChart } from "../components/charts/DoughnutChart";
 import { useBudget } from "../hooks/useBudget";
 import { useTransactionsPerCategory } from "../hooks/useTransactionsPerCategory";
 import { EntityManagement } from "../components/tables/EntityManagement";
@@ -10,6 +10,7 @@ export default function HomePage() {
         transactionsPerCategory,
         transactionsPerCategoryData,
         transactionsPerCategoryLabels,
+        transactionsPerCategoryColors,
         getTransactionsPerCategory
     } = useTransactionsPerCategory()
 
@@ -35,10 +36,11 @@ export default function HomePage() {
                 <section className="budgetting-chart">
                     <h2 className="text-primary font-bold py-1">By category</h2>
 
-                    <div className="flex justify-center items-center">
-                        <PolarAreaChart
+                    <div className="flex justify-center items-center h-[350px]">
+                        <DoughnutChart
                             data={transactionsPerCategoryData}
                             labels={transactionsPerCategoryLabels}
+                            colors={transactionsPerCategoryColors}
                         />
                     </div>
                 </section>
