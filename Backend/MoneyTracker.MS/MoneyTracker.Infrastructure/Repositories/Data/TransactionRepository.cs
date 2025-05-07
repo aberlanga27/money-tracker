@@ -1,5 +1,6 @@
 namespace MoneyTracker.Infrastructure.Repositories;
 
+using System.Security.Cryptography.X509Certificates;
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using MoneyTracker.Domain.DTOs;
@@ -70,6 +71,7 @@ public class TransactionRepository(
             .Include(x => x.TransactionCategory)
             .Include(x => x.TransactionType)
             .OrderByDescending(x => x.TransactionDate)
+            .OrderByDescending(x => x.TransactionId)
             .Skip(offsetSize).Take(pageSize);
     }
 
@@ -169,6 +171,7 @@ public class TransactionRepository(
             .Include(x => x.TransactionCategory)
             .Include(x => x.TransactionType)
             .OrderByDescending(x => x.TransactionDate)
+            .OrderByDescending(x => x.TransactionId)
             .Where(x =>
                 x.TransactionDescription.Contains(search) ||
                 // CTX: repository-search, do not remove this line
@@ -183,6 +186,7 @@ public class TransactionRepository(
             .Include(x => x.TransactionCategory)
             .Include(x => x.TransactionType)
             .OrderByDescending(x => x.TransactionDate)
+            .OrderByDescending(x => x.TransactionId)
             .AsQueryable();
 
         var isByAttributesFilter = false;
