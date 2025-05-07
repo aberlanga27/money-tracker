@@ -9,12 +9,12 @@ export function useTransactionsPerCategory() {
 
     const getTransactionsPerCategory = () => {        
         const today = new Date()
-        let startDate = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0)
-        let endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59)
+        let startDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), 1, 0, 0, 0))
+        let endDate = new Date(Date.UTC(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59))
 
         api.post('/Transaction/GroupByCategory', {
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString()
+            startDate: startDate,
+            endDate: endDate
         })
             .then(({ data }) => {
                 setTransactionsPerCategory(data.response)
