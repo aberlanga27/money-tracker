@@ -5,10 +5,10 @@ import { useTransactionsPerCategory } from "../hooks/useTransactionsPerCategory"
 import { EntityManagement } from "../components/tables/EntityManagement";
 import { config } from "../config/entity-management";
 import { IndexedSelect } from "../components/common/IndexedSelect";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function HomePage() {
-    const [budgetTypeId, setBudgetTypeId] = useState(0)
+    const [budgetTypeId, setBudgetTypeId] = useState(new Date().getDate() > 15 ? 2 : 1)
 
     const {
         transactionsPerCategory,
@@ -23,13 +23,6 @@ export default function HomePage() {
         freeBudget,
         usedBudget
     } = useBudget({ transactionsPerCategory, budgetTypeId })
-
-    useEffect(() => {
-        const today = new Date()
-        const currentDay = today.getDate()
-
-        setBudgetTypeId(currentDay > 15 ? 2 : 1)
-    }, [])
 
     return (
         <>
