@@ -45,6 +45,7 @@ export function IndexedSelect({
     onClear = () => { },
 }) {
     const uniqueId = useId();
+    const componentId = `indexed-select-${uniqueId}`;
 
     const [selectedOption, setSelectedOption] = useState(null);
 
@@ -111,18 +112,18 @@ export function IndexedSelect({
     }, [endpoint, search, fallbackOptions]);
 
     const focusOnDropdown = () => {
-        const optionsContainer = document.querySelector(`#${uniqueId} .selectable-options`);
+        const optionsContainer = document.querySelector(`#${componentId} .selectable-options`);
         optionsContainer.classList.add("visible");
 
-        const optionsArrow = document.querySelector(`#${uniqueId} .selectable-options-arrow`);
+        const optionsArrow = document.querySelector(`#${componentId} .selectable-options-arrow`);
         optionsArrow.classList.add("rotate");
     }
 
     const blurOnDropdown = () => {
-        const optionsContainer = document.querySelector(`#${uniqueId} .selectable-options`);
+        const optionsContainer = document.querySelector(`#${componentId} .selectable-options`);
         optionsContainer.classList.remove("visible");
 
-        const optionsArrow = document.querySelector(`#${uniqueId} .selectable-options-arrow`);
+        const optionsArrow = document.querySelector(`#${componentId} .selectable-options-arrow`);
         optionsArrow.classList.remove("rotate");
     }
 
@@ -175,7 +176,7 @@ export function IndexedSelect({
 
     return (
         <div
-            id={uniqueId}
+            id={componentId}
             className="flex flex-col gap-2 selectable-options-container"
             style={{ width, minWidth }}
             onFocus={focusOnDropdown}
