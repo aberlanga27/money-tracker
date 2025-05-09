@@ -45,27 +45,27 @@ export function BaseModal({
 
     return (
         <div
-            className="modal-overlay flex items-center justify-center fixed inset-0 bg-black/50 bg-opacity-50 z-50"
+            className="modal-overlay flex items-center justify-center fixed inset-0 bg-black/50 z-50"
             onDoubleClick={handleClose}
             role="dialog"
-            aria-labelledby="modal-title"
+            aria-labelledby={title}
             aria-hidden={!show}
         >
             <div
-                className="modal-content bg-white rounded-lg shadow-lg p-6 relative w-[70vw]"
+                className="modal-content bg-white rounded-b-lg rounded-t-2xl relative w-[70vw]"
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className="modal-title mb-2">
-                    <h3 id="modal-title" className="text-lg text-primary font-bold">
+                <div className="modal-title bg-primary px-6 py-4 mb-4 rounded-t-lg">
+                    <h3 id="modal-title" className="text-lg text-white font-bold">
                         {title}
                     </h3>
                 </div>
 
-                <div className="modal-body mb-4">
+                <div className="modal-body px-6 mb-4">
                     {children}
                 </div>
 
-                <div className="modal-actions flex justify-end space-x-2">
+                <div className="modal-actions flex justify-end px-6 pb-6 space-x-2">
                     <PlainButton onClick={handleClose} className='w-full'>
                         {closeLegend}
                     </PlainButton>
