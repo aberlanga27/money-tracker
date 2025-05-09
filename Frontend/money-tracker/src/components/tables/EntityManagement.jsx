@@ -14,6 +14,7 @@ export function EntityManagement({
     indexKey,
     displayName,
     properties = [],
+    itemsPerPage = 5,
     allowAdd = false,
     allowEdit = false,
     allowDelete = false,
@@ -41,7 +42,7 @@ export function EntityManagement({
 
     // ...
 
-    const getRecordsPerPage = useCallback(({ page, itemsPerPage }) => {
+    const getRecordsPerPage = useCallback(({ page }) => {
         api.get(`${endpoint}?pageSize=${itemsPerPage}&offsetSize=${(page - 1) * itemsPerPage}`)
             .then(({ data }) => {
                 if (!data.status) {
@@ -54,7 +55,7 @@ export function EntityManagement({
                 setNoRecords(data.totalRecords);
             })
             .catch(error => notifyError({ message: error }));
-    }, [endpoint]);
+    }, [endpoint, itemsPerPage]);
 
     const searchRecordsOnDatabase = useCallback(() => {
         const needle = search?.trim().toLowerCase();
@@ -165,7 +166,7 @@ export function EntityManagement({
     // ...
 
     useEffect(() => {
-        getRecordsPerPage({ page: 1, itemsPerPage: 5 });
+        getRecordsPerPage({ page: 1 });
 
         return () => {
             setRecords([]);
@@ -177,7 +178,7 @@ export function EntityManagement({
             setSelectedRecord({});
             setModalMode("add");
         }
-    }, [])
+    }, [getRecordsPerPage])
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -319,7 +320,7 @@ export function EntityManagement({
 
             <Pagination
                 noRecords={noRecords}
-                itemsPerPage={5}
+                itemsPerPage={itemsPerPage}
                 onPrevious={getRecordsPerPage} onNext={getRecordsPerPage}
             />
         </div>

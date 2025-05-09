@@ -4,7 +4,7 @@ import Menu from "../components/Menu";
 export default function MainLayout() {
     const menuOptions = [
         { label: "Home", path: "/", icon: "home" },
-        { label: "Calendar", path: "/calendar", icon: "calendar_month" },
+        { label: "Budget", path: "/budget", icon: "receipt_long" },
         { label: "Stadistics", path: "/stats", icon: "leaderboard" },
         { label: "Accounts", path: "/accounts", icon: "switch_account" },
         { label: "Transactions", path: "/transactions", icon: "receipt" },

@@ -65,9 +65,9 @@ const budgets = {
     displayName: 'Budgets',
     properties: [
         { name: 'budgetId', display: 'ID', type: 'number', required: true },
-        { name: 'transactionCategoryId', display: 'Transaction Category', type: 'number', required: true },
-        { name: 'budgetTypeId', display: 'Budget Type', type: 'select', option: { name: 'BudgetType', value: 'budgetTypeId', label: 'budgetTypeName' }, required: true },
-        { name: 'budgetAmount', display: 'Budget Amount', type: 'number', required: true }
+        { name: 'transactionCategoryId', display: 'Category', type: 'select', option: { name: 'TransactionCategory', value: 'transactionCategoryId', label: 'transactionCategoryName' }, required: true },
+        { name: 'budgetTypeId', display: 'Type', type: 'select', option: { name: 'BudgetType', value: 'budgetTypeId', label: 'budgetTypeName' }, required: true },
+        { name: 'budgetAmount', display: 'Amount', type: 'number', format:'currency', min: 1, max: 100, required: true },
     ],
     allowAdd: true,
     allowEdit: true,
