@@ -4,8 +4,12 @@ import { useBudget } from "../hooks/useBudget";
 import { useTransactionsPerCategory } from "../hooks/useTransactionsPerCategory";
 import { EntityManagement } from "../components/tables/EntityManagement";
 import { config } from "../config/entity-management";
+import { IndexedSelect } from "../components/common/IndexedSelect";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
+    const [budgetTypeId, setBudgetTypeId] = useState(0)
+
     const {
         transactionsPerCategory,
         transactionsPerCategoryData,
@@ -18,14 +22,27 @@ export default function HomePage() {
         overallBudget,
         freeBudget,
         usedBudget
-    } = useBudget({ transactionsPerCategory })
+    } = useBudget({ transactionsPerCategory, budgetTypeId })
+
+    useEffect(() => {
+        const today = new Date()
+        const currentDay = today.getDate()
+
+        setBudgetTypeId(currentDay > 15 ? 2 : 1)
+    }, [])
 
     return (
         <>
             <section id="budgetting-sneak-peak">
                 <h2 className="text-primary font-bold pb-1">Budget</h2>
 
-                <div className="grid grid-cols-3 gap-1">
+                <IndexedSelect
+                    endpoint={'BudgetType'} label={'Type'} optionLabel={'budgetTypeName'} optionValue={'budgetTypeId'}
+                    defaultValue={budgetTypeId}
+                    onChange={({ value }) => setBudgetTypeId(value)}
+                />
+
+                <div className="grid grid-cols-3 gap-1 pt-1">
                     <InfoCard title={'Budget'} value={overallBudget} />
                     <InfoCard title={'Used'} value={usedBudget} />
                     <InfoCard title={'Available'} value={freeBudget} />
@@ -36,7 +53,7 @@ export default function HomePage() {
                 <section className="budgetting-chart">
                     <h2 className="text-primary font-bold py-1">By category</h2>
 
-                    <div className="flex justify-center items-center h-[350px]">
+                    <div className="flex justify-center items-center h-[350px]">                
                         <DoughnutChart
                             data={transactionsPerCategoryData}
                             labels={transactionsPerCategoryLabels}
