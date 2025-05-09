@@ -34,7 +34,7 @@ export function PlainButton({ children, onClick, disabled = false, className = "
             type={type}
             disabled={disabled}
             onClick={onClick}
-            className={`border-primary text-primary p-2 shadow-lg rounded-lg hover:bg-primary/20 transition duration-300 flex items-center justify-center cursor-pointer ${className}`}
+            className={`border-primary text-primary p-2 rounded-lg hover:bg-primary/20 transition duration-300 flex items-center justify-center cursor-pointer ${className}`}
         >
             {children}
         </button>
