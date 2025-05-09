@@ -3,10 +3,6 @@ import { api } from "../../boot/axios";
 import { useCallback, useEffect, useId, useState } from "react";
 import { notifyError } from '../../utils/notify';
 
-// TODOS:
-//  - Add support to esc key to close the dropdown
-//  - Add support arrows and enter keys to navigate the dropdown
-
 /**
  * @component
  * Custom select component that fetches options from an API endpoint.
@@ -199,7 +195,7 @@ export function IndexedSelect({
                 {
                     selectedOption
                         ? (<span className="material-icons selectable-options-close text-gray-300 hover:text-negative" onClick={handelClearSelected}>close</span>)
-                        : ""
+                        : null
                 }
                 <span className="material-icons selectable-options-arrow">arrow_drop_down</span>
             </div>

@@ -5,7 +5,6 @@ Guidelines for developing React applications using JavaScript, Vite, and Tailwin
 
 ## Code Style Guidelines
 - Use functional components with hooks
-- Pass props with PropTypes for validation
 - Avoid using React.FC (not needed in JavaScript)
 - Implement proper error boundaries
 - Use TailwindCSS for styling
@@ -25,7 +24,7 @@ Guidelines for developing React applications using JavaScript, Vite, and Tailwin
 - Implement integration tests
 
 ## Documentation Standards
-- Document component props using comments and PropTypes
+- Document component props using comments
 - Include usage examples
 - Document custom hooks
 - Add storybook stories
