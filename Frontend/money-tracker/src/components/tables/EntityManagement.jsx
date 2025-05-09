@@ -22,6 +22,7 @@ export function EntityManagement({
     onRecordsModified = () => { },
 }) {
     const uniqueId = useId();
+    const componentId = `entity-management-${uniqueId}`;
 
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState({});
@@ -86,9 +87,9 @@ export function EntityManagement({
     }, [endpoint, filter, fallbackRecords]);
 
     const togleFilterPopUp = useCallback(() => {
-        const filterPopUp = document.querySelector(`#entity-management-${uniqueId} .filter-pop-up`);
+        const filterPopUp = document.querySelector(`#${componentId} .filter-pop-up`);
         filterPopUp.classList.toggle('visible');
-    }, [uniqueId]);
+    }, [componentId]);
 
     const clearFilterProperty = useCallback((property) => {
         const newFilter = { ...filter };
@@ -197,7 +198,7 @@ export function EntityManagement({
     }, [filter, filterRecords]);
 
     return (
-        <div id={`entity-management-${uniqueId}`} className='entity-management-table text-sm'>
+        <div id={componentId} className='entity-management-table text-sm'>
             <div className="actions-bar flex justify-between items-center">
                 <input
                     type="text"
@@ -233,7 +234,7 @@ export function EntityManagement({
                 <div className="selectors">
                     {
                         selectProperties.map((property, index) => (
-                            <div key={`${uniqueId}-${index}`} className="filter-selectors">
+                            <div key={`${componentId}-select-${index}`} className="filter-selectors">
                                 <IndexedSelect
                                     endpoint={property.option.name} label={property.display}
                                     optionLabel={property.option.label} optionValue={property.option.value}
