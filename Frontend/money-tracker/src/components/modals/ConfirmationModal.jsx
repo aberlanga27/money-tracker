@@ -7,7 +7,6 @@ export function ConfirmationModal({
     onOk = () => { },
     onClose = () => { },
 }) {
-
     return (
         <BaseModal
             show={show}
@@ -22,5 +21,4 @@ export function ConfirmationModal({
             </div>
         </BaseModal>
     );
-
 }
