@@ -95,9 +95,15 @@ export function IndexedSelect({
     }
 
     const fetchDefaultValue = () => {
-        if (!defaultValue) return;
+        if (!defaultValue) {
+            setDisplaySearch("");
+            setSearch("");
+            setSelectedOption(null);
+            return;
+        };
+
         if (fallbackOptions.some(option => option[optionValue] === defaultValue)) return;
-    
+
         api.get(`/${endpoint}/${defaultValue}`)
             .then(({ data }) => {
                 if (!data.status) {
@@ -149,10 +155,6 @@ export function IndexedSelect({
     // ...
 
     useEffect(() => {
-        setDisplaySearch("");
-        setSearch("");
-        setSelectedOption(null);
-
         fetchDefaultValue();
     }, [defaultValue]);
 
