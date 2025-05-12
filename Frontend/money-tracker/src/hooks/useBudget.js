@@ -1,4 +1,5 @@
 import { api } from "../boot/axios"
+import { notifyError } from "../utils/notify"
 import { useCallback, useEffect, useState } from "react"
 
 export function useBudget({ transactionsPerCategory, budgetTypeId = 0 }) {
@@ -13,7 +14,7 @@ export function useBudget({ transactionsPerCategory, budgetTypeId = 0 }) {
             .then(({ data }) => {
                 setBudgetsPerCategory(data)
             })
-            .catch(error => console.error('Error fetching budgets:', error))
+            .catch(error => notifyError({ message: error }))
     }, [budgetTypeId, setBudgetsPerCategory])
 
     useEffect(() => {
