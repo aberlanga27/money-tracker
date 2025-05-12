@@ -1,15 +1,7 @@
+import { currency } from "../../utils/formatters";
+import { defaultColors } from "../../utils/colors";
 import { useEffect, useId } from "react";
 import Chart from 'chart.js/auto';
-import { currency } from "../../utils/formatters";
-
-const defaultColors = [
-    '#FF6384',
-    '#36A2EB',
-    '#FFCE56',
-    '#4BC0C0',
-    '#9966FF',
-    '#FF9F40',
-];
 
 export function DoughnutChart({ data = [], labels = [], colors }) {
     const uniqueId = useId();
