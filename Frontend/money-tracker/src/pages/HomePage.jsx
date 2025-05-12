@@ -3,11 +3,11 @@ import { DoughnutChart } from "../components/charts/DoughnutChart";
 import { EntityManagement } from "../components/tables/EntityManagement";
 import { IndexedSelect } from "../components/common/IndexedSelect";
 import { InfoCard } from "../components/InfoCard";
+import { TabPanels } from "../components/common/TabPanels";
 import { useBudget } from "../hooks/useBudget";
 import { useState } from "react";
 import { useTransactionsPerBank } from "../hooks/useTransactionsPerBank";
 import { useTransactionsPerCategory } from "../hooks/useTransactionsPerCategory";
-import { TabPanels } from "../components/common/TabPanels";
 
 export default function HomePage() {
     const [budgetTypeId, setBudgetTypeId] = useState(new Date().getDate() > 15 ? 2 : 1)
@@ -59,21 +59,21 @@ export default function HomePage() {
                     <h2 className="text-primary font-bold py-1">Charts</h2>
 
                     <TabPanels sections={['By Category', 'By Bank', 'Budget vs Real']} className="flex flex-col gap-1">
-                        <div className="flex justify-center items-center h-[350px]">
+                        <div className="flex justify-center items-center h-[30vh]">
                             <DoughnutChart
                                 data={transactionsPerCategoryData}
                                 labels={transactionsPerCategoryLabels}
                             />
                         </div>
 
-                        <div className="flex justify-center items-center h-[350px]">
+                        <div className="flex justify-center items-center h-[30vh]">
                             <DoughnutChart
                                 data={transactionsPerBankData}
                                 labels={transactionsPerBankLabels}
                             />
                         </div>
 
-                        <div className="flex justify-center items-center h-[350px]">
+                        <div className="flex justify-center items-center h-[30vh]">
                             tmp
                         </div>
                     </TabPanels>

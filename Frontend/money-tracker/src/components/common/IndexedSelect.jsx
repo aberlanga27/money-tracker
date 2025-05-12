@@ -1,4 +1,3 @@
-import './IndexedSelect.css';
 import { api } from "../../boot/axios";
 import { notifyError } from '../../utils/notify';
 import { useCallback, useEffect, useId, useState } from "react";
@@ -133,18 +132,18 @@ export function IndexedSelect({
 
     const focusOnDropdown = () => {
         const optionsContainer = document.querySelector(`#${componentId} .selectable-options`);
-        optionsContainer.classList.add("visible");
+        optionsContainer.classList.remove("hidden");
 
         const optionsArrow = document.querySelector(`#${componentId} .selectable-options-arrow`);
-        optionsArrow.classList.add("rotate");
+        optionsArrow.classList.add("rotate-180");
     }
 
     const blurOnDropdown = () => {
         const optionsContainer = document.querySelector(`#${componentId} .selectable-options`);
-        optionsContainer.classList.remove("visible");
+        optionsContainer.classList.add("hidden");
 
         const optionsArrow = document.querySelector(`#${componentId} .selectable-options-arrow`);
-        optionsArrow.classList.remove("rotate");
+        optionsArrow.classList.remove("rotate-180");
     }
 
     // ...
@@ -182,7 +181,7 @@ export function IndexedSelect({
     return (
         <div
             id={componentId}
-            className="flex flex-col gap-2 selectable-options-container"
+            className="selectable-options-container flex flex-col gap-2 relative"
             style={{ width, minWidth }}
             onFocus={focusOnDropdown}
             onBlur={blurOnDropdown}
@@ -203,20 +202,20 @@ export function IndexedSelect({
             <div className="cursor-pointer absolute text-gray-500 right-2 top-2">
                 {
                     selectedOption
-                        ? (<span className="material-icons selectable-options-close text-gray-300 hover:text-negative" onClick={handelClearSelected}>close</span>)
+                        ? (<span className="material-icons selectable-options-close text-gray-300 hover:text-negative transition-all duration-300" onClick={handelClearSelected}>close</span>)
                         : null
                 }
-                <span className="material-icons selectable-options-arrow">arrow_drop_down</span>
+                <span className="material-icons selectable-options-arrow transition-all duration-300 transform">arrow_drop_down</span>
             </div>
 
-            <div className="selectable-options" onMouseDown={(e) => e.preventDefault()}>
+            <div className="selectable-options hidden bg-white w-[100%] max-h-[200px] mt-1 border-1 border-gray-300 rounded-md z-1000 overflow-y-auto absolute top-full left-0" onMouseDown={(e) => e.preventDefault()}>
                 {
                     options?.length > 0
                         ? options.map((option) => (
                             <div
                                 key={option[optionValue]}
                                 id={`option-${option[optionValue]}`}
-                                className={`option ${selectedOption === option[optionValue] ? "selected" : ""}`}
+                                className={`option p-3 cursor-pointer transition-all duration-300 ${selectedOption === option[optionValue] ? "bg-primary text-white" : "hover:bg-primary/20"}`}
                                 onClick={() => {
                                     handleSelectedOption(option);
                                     blurOnDropdown();
@@ -225,7 +224,7 @@ export function IndexedSelect({
                                 {customOptionLabel ? customOptionLabel(option) : option[optionLabel]}
                             </div>
                         ))
-                        : <div className="no-options">No options found</div>
+                        : <div className="no-options p-3 text-center text-secondary">No options found</div>
                 }
             </div>
         </div>
