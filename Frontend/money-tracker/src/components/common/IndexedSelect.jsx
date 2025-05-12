@@ -1,7 +1,7 @@
 import './IndexedSelect.css';
 import { api } from "../../boot/axios";
-import { useCallback, useEffect, useId, useState } from "react";
 import { notifyError } from '../../utils/notify';
+import { useCallback, useEffect, useId, useState } from "react";
 
 /**
  * @component
@@ -38,7 +38,7 @@ export function IndexedSelect({
     width = "100%",
     minWidth = "auto",
     onChange = () => { },
-    onClear = () => { },
+    onClear = () => { }
 }) {
     const uniqueId = useId();
     const componentId = `indexed-select-${uniqueId}`;
@@ -54,10 +54,10 @@ export function IndexedSelect({
 
     // ...
 
-    const fetchOptions = async () => {
+    const fetchOptions = () => {
         setLoading(true);
 
-        await api.get(`/${endpoint}`)
+        api.get(`/${endpoint}`)
             .then(({ data }) => {
                 if (!data.status) {
                     notifyError({ message: data.message });
@@ -71,11 +71,11 @@ export function IndexedSelect({
             .finally(() => setLoading(false));
     }
 
-    const fetchDefaultValue = async () => {
+    const fetchDefaultValue = () => {
         if (!defaultValue) return;
         if (fallbackOptions.some(option => option[optionValue] === defaultValue)) return;
 
-        await api.get(`/${endpoint}/${defaultValue}`)
+        api.get(`/${endpoint}/${defaultValue}`)
             .then(({ data }) => {
                 if (!data.status) {
                     notifyError({ message: data.message });
