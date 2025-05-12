@@ -1,6 +1,5 @@
 namespace MoneyTracker.Infrastructure.Repositories;
 
-using System.Security.Cryptography.X509Certificates;
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using MoneyTracker.Domain.DTOs;
@@ -244,6 +243,20 @@ public class TransactionRepository(
             .Select(x => new TransactionsGroupedByCategory
             {
                 TransactionCategory = x.Key,
+                TotalAmount = x.Sum(y => y.TransactionAmount)
+            });
+    }
+
+    public virtual IEnumerable<TransactionsGroupedByBank> GetTransactionsGroupedByBank(DateTime startDate, DateTime endDate)
+    {
+        return context.Transactions
+            .AsNoTracking()
+            .Where(x => x.TransactionDate >= startDate && x.TransactionDate <= endDate)
+            .Include(x => x.Bank)
+            .GroupBy(x => x.Bank)
+            .Select(x => new TransactionsGroupedByBank
+            {
+                Bank = x.Key,
                 TotalAmount = x.Sum(y => y.TransactionAmount)
             });
     }

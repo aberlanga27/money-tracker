@@ -76,4 +76,12 @@ public interface ITransactionRepository
     /// <param name="endDate"></param>
     /// <returns></returns>
     IEnumerable<TransactionsGroupedByCategory> GetTransactionsGroupedByCategory(DateTime startDate, DateTime endDate);
+
+    /// <summary>
+    /// Get transactions grouped by bank
+    /// </summary>
+    /// <param name="startDate"></param>
+    /// <param name="endDate"></param>
+    /// <returns></returns>
+    IEnumerable<TransactionsGroupedByBank> GetTransactionsGroupedByBank(DateTime startDate, DateTime endDate);
 }

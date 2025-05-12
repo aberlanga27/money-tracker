@@ -1,11 +1,13 @@
-import { InfoCard } from "../components/InfoCard";
-import { DoughnutChart } from "../components/charts/DoughnutChart";
-import { useBudget } from "../hooks/useBudget";
-import { useTransactionsPerCategory } from "../hooks/useTransactionsPerCategory";
-import { EntityManagement } from "../components/tables/EntityManagement";
 import { config } from "../config/entity-management";
+import { DoughnutChart } from "../components/charts/DoughnutChart";
+import { EntityManagement } from "../components/tables/EntityManagement";
 import { IndexedSelect } from "../components/common/IndexedSelect";
+import { InfoCard } from "../components/InfoCard";
+import { useBudget } from "../hooks/useBudget";
 import { useState } from "react";
+import { useTransactionsPerBank } from "../hooks/useTransactionsPerBank";
+import { useTransactionsPerCategory } from "../hooks/useTransactionsPerCategory";
+import { TabPanels } from "../components/common/TabPanels";
 
 export default function HomePage() {
     const [budgetTypeId, setBudgetTypeId] = useState(new Date().getDate() > 15 ? 2 : 1)
@@ -14,9 +16,13 @@ export default function HomePage() {
         transactionsPerCategory,
         transactionsPerCategoryData,
         transactionsPerCategoryLabels,
-        transactionsPerCategoryColors,
         getTransactionsPerCategory
     } = useTransactionsPerCategory()
+
+    const {
+        transactionsPerBankData,
+        transactionsPerBankLabels
+    } = useTransactionsPerBank()
 
     const {
         overallBudget,
@@ -44,15 +50,22 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
                 <section className="budgetting-chart">
-                    <h2 className="text-primary font-bold py-1">By category</h2>
+                    <h2 className="text-primary font-bold py-1">Grouped by</h2>
 
-                    <div className="flex justify-center items-center h-[350px]">                
-                        <DoughnutChart
-                            data={transactionsPerCategoryData}
-                            labels={transactionsPerCategoryLabels}
-                            colors={transactionsPerCategoryColors}
-                        />
-                    </div>
+                    <TabPanels sections={['Category', 'Bank']} className="flex flex-col gap-1">
+                        <div className="flex justify-center items-center h-[350px]">
+                            <DoughnutChart
+                                data={transactionsPerCategoryData}
+                                labels={transactionsPerCategoryLabels}
+                            />
+                        </div>
+                        <div className="flex justify-center items-center h-[350px]">
+                            <DoughnutChart
+                                data={transactionsPerBankData}
+                                labels={transactionsPerBankLabels}
+                            />
+                        </div>
+                    </TabPanels>      
                 </section>
 
                 <section id="transactions-list">

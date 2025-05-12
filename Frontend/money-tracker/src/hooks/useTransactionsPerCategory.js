@@ -6,7 +6,6 @@ export function useTransactionsPerCategory() {
     const [transactionsPerCategory, setTransactionsPerCategory] = useState([])
     const [data, setData] = useState([])
     const [labels, setLabels] = useState([])
-    const [colors, setColors] = useState([])
 
     const getTransactionsPerCategory = useCallback(() => {        
         const today = new Date()
@@ -30,14 +29,12 @@ export function useTransactionsPerCategory() {
     useEffect(() => {
         setData(transactionsPerCategory.map((category) => category.totalAmount))
         setLabels(transactionsPerCategory.map((category) => category.transactionCategoryName))
-        setColors(transactionsPerCategory.map((category) => `#${category.transactionCategoryColor}`))
     }, [transactionsPerCategory])
 
     return {
         transactionsPerCategory,
         transactionsPerCategoryData: data,
         transactionsPerCategoryLabels: labels,
-        transactionsPerCategoryColors: colors,
         getTransactionsPerCategory
     }
 }

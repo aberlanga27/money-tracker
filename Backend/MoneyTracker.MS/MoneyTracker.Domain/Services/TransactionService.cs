@@ -135,4 +135,15 @@ public class TransactionService(
             Response = mapper.Map(transactions)
         };
     }
+
+    public ValueResponse<IEnumerable<TransactionsGroupedByBankDTO>> GetTransactionsGroupedByBank(DateTime startDate, DateTime endDate)
+    {
+        var transactions = transactionRepository.GetTransactionsGroupedByBank(startDate, endDate);
+        return new ValueResponse<IEnumerable<TransactionsGroupedByBankDTO>>
+        {
+            Status = true,
+            Message = translator.T("Entities found", ["Transactions"]),
+            Response = mapper.Map(transactions)
+        };
+    }
 }

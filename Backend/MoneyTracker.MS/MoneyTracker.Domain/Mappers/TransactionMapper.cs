@@ -39,4 +39,11 @@ public partial class TransactionMapper
     [MapProperty(nameof(TransactionsGroupedByCategory.TransactionCategory.TransactionCategoryColor), nameof(TransactionsGroupedByCategoryDTO.TransactionCategoryColor))]
     public partial TransactionsGroupedByCategoryDTO Map(TransactionsGroupedByCategory entity);
     public partial IEnumerable<TransactionsGroupedByCategoryDTO> Map(IEnumerable<TransactionsGroupedByCategory> entities);
+
+    // ...
+
+    [MapProperty(nameof(TransactionsGroupedByBank.Bank.BankId), nameof(TransactionsGroupedByBankDTO.BankId))]
+    [MapProperty(nameof(TransactionsGroupedByBank.Bank.BankName), nameof(TransactionsGroupedByBankDTO.BankName))]
+    public partial TransactionsGroupedByBankDTO Map(TransactionsGroupedByBank entity);
+    public partial IEnumerable<TransactionsGroupedByBankDTO> Map(IEnumerable<TransactionsGroupedByBank> entities);
 }

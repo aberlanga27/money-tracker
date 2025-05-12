@@ -187,4 +187,23 @@ public class TransactionController(
         var transactions = transactionService.GetTransactionsGroupedByCategory(dateRange.StartDate, dateRange.EndDate);
         return Ok(transactions);
     }
+
+    /// <summary>
+    /// Gets transactions grouped by bank.
+    /// </summary>
+    /// <param name="dateRange">The date range to filter transactions.</param>
+    /// <returns>A list of transactions grouped by bank.</returns>
+    [HttpPost("GroupByBank")]
+    [ProducesResponseType(typeof(ValueResponse<IEnumerable<TransactionsGroupedByBankDTO>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(TransactionResponse), StatusCodes.Status400BadRequest)]
+    public IActionResult GetTransactionsGroupedByBank(DateTimeRangeDTO dateRange)
+    {
+        logger.LogDebug("Getting transactions grouped by bank from {StartDate} to {EndDate}", dateRange.StartDate, dateRange.EndDate);
+
+        if (dateRange.StartDate == default || dateRange.EndDate == default || dateRange.StartDate > dateRange.EndDate)
+            return BadRequest(new TransactionResponse { Status = false, Message = translator.T("Invalid date range") });
+
+        var transactions = transactionService.GetTransactionsGroupedByBank(dateRange.StartDate, dateRange.EndDate);
+        return Ok(transactions);
+    }
 }

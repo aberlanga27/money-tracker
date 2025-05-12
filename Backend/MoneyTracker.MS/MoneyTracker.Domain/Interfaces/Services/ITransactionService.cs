@@ -69,4 +69,12 @@ public interface ITransactionService
     /// <param name="endDate"></param>
     /// <returns></returns>
     ValueResponse<IEnumerable<TransactionsGroupedByCategoryDTO>> GetTransactionsGroupedByCategory(DateTime startDate, DateTime endDate);
+
+    /// <summary>
+    /// Get transactions grouped by bank
+    /// </summary>
+    /// <param name="startDate"></param>
+    /// <param name="endDate"></param>
+    /// <returns></returns>
+    ValueResponse<IEnumerable<TransactionsGroupedByBankDTO>> GetTransactionsGroupedByBank(DateTime startDate, DateTime endDate);
 }
