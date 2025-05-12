@@ -21,7 +21,8 @@ export default function HomePage() {
 
     const {
         transactionsPerBankData,
-        transactionsPerBankLabels
+        transactionsPerBankLabels,
+        getTransactionsPerBank
     } = useTransactionsPerBank()
 
     const {
@@ -29,6 +30,11 @@ export default function HomePage() {
         freeBudget,
         usedBudget
     } = useBudget({ transactionsPerCategory, budgetTypeId })
+
+    const updateCharts = () => {
+        getTransactionsPerCategory()
+        getTransactionsPerBank()
+    }
 
     return (
         <>
@@ -50,28 +56,33 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
                 <section className="budgetting-chart">
-                    <h2 className="text-primary font-bold py-1">Grouped by</h2>
+                    <h2 className="text-primary font-bold py-1">Charts</h2>
 
-                    <TabPanels sections={['Category', 'Bank']} className="flex flex-col gap-1">
+                    <TabPanels sections={['By Category', 'By Bank', 'Budget vs Real']} className="flex flex-col gap-1">
                         <div className="flex justify-center items-center h-[350px]">
                             <DoughnutChart
                                 data={transactionsPerCategoryData}
                                 labels={transactionsPerCategoryLabels}
                             />
                         </div>
+
                         <div className="flex justify-center items-center h-[350px]">
                             <DoughnutChart
                                 data={transactionsPerBankData}
                                 labels={transactionsPerBankLabels}
                             />
                         </div>
-                    </TabPanels>      
+
+                        <div className="flex justify-center items-center h-[350px]">
+                            tmp
+                        </div>
+                    </TabPanels>
                 </section>
 
                 <section id="transactions-list">
-                    <h2 className="text-primary font-bold py-1">Last transactions</h2>
+                    <h2 className="text-primary font-bold py-1">Resent Transactions</h2>
 
-                    <EntityManagement {...config[0].value} onRecordsModified={getTransactionsPerCategory} />
+                    <EntityManagement {...config[0].value} onRecordsModified={updateCharts} />
                 </section>
             </div>
         </>

@@ -33,6 +33,7 @@ export function useTransactionsPerBank() {
 
     return {
         transactionsPerBankData: data,
-        transactionsPerBankLabels: labels
+        transactionsPerBankLabels: labels,
+        getTransactionsPerBank
     }
 }
