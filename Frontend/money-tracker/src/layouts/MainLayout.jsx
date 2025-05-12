@@ -6,7 +6,7 @@ export default function MainLayout() {
         { label: "Home", path: "/", icon: "home" },
         { label: "Budget", path: "/budget", icon: "receipt_long" },
         { label: "Stadistics", path: "/stats", icon: "leaderboard" },
-        { label: "Accounts", path: "/accounts", icon: "switch_account" },
+        { label: "Banks", path: "/banks", icon: "switch_account" },
         { label: "Transactions", path: "/transactions", icon: "receipt" },
     ]
 
