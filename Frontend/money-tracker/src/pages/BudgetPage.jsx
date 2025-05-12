@@ -1,5 +1,5 @@
-import { EntityManagement } from "../components/tables/EntityManagement";
 import { config } from "../config/entity-management";
+import { EntityManagement } from "../components/tables/EntityManagement";
 
 export default function BudgetPage() {
     return (

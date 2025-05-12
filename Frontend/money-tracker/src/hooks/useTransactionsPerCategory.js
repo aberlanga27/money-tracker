@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
-import { notifyError } from "../utils/notify";
 import { api } from "../boot/axios";
+import { notifyError } from "../utils/notify";
+import { useCallback, useEffect, useState } from "react";
 
 export function useTransactionsPerCategory() {
     const [transactionsPerCategory, setTransactionsPerCategory] = useState([])

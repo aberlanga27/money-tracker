@@ -1,3 +1,4 @@
+import { BarChart } from "../components/charts/BarChart";
 import { config } from "../config/entity-management";
 import { DoughnutChart } from "../components/charts/DoughnutChart";
 import { EntityManagement } from "../components/tables/EntityManagement";
@@ -5,6 +6,7 @@ import { IndexedSelect } from "../components/common/IndexedSelect";
 import { InfoCard } from "../components/InfoCard";
 import { TabPanels } from "../components/common/TabPanels";
 import { useBudget } from "../hooks/useBudget";
+import { useBudgetVsReal } from "../hooks/useBudgetVsReal";
 import { useState } from "react";
 import { useTransactionsPerBank } from "../hooks/useTransactionsPerBank";
 import { useTransactionsPerCategory } from "../hooks/useTransactionsPerCategory";
@@ -26,10 +28,18 @@ export default function HomePage() {
     } = useTransactionsPerBank()
 
     const {
+        budgetsPerCategory,
         overallBudget,
         freeBudget,
         usedBudget
     } = useBudget({ transactionsPerCategory, budgetTypeId })
+
+    const {
+        budgetVsRealData,
+        budgetVsRealLabels
+    } = useBudgetVsReal({ transactionsPerCategory, budgetsPerCategory })
+
+    // ...
 
     const updateCharts = () => {
         getTransactionsPerCategory()
@@ -74,7 +84,11 @@ export default function HomePage() {
                         </div>
 
                         <div className="flex justify-center items-center h-[30vh]">
-                            tmp
+                            <BarChart
+                                legends={['Budget', 'Real']}
+                                data={budgetVsRealData}
+                                labels={budgetVsRealLabels}
+                            />
                         </div>
                     </TabPanels>
                 </section>

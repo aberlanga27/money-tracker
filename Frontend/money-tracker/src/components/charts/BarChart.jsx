@@ -3,7 +3,7 @@ import { defaultColors } from "../../utils/colors";
 import { useEffect, useId } from "react";
 import Chart from 'chart.js/auto';
 
-export function BarChart({ data = [], labels = [], colors }) {
+export function BarChart({ legends = [], data = [], labels = [], colors }) {
     const uniqueId = useId();
     const chartId = `bar-chart-${uniqueId}`;
 
@@ -12,11 +12,11 @@ export function BarChart({ data = [], labels = [], colors }) {
             type: 'bar',
             data: {
                 datasets: [{
-                    label: 'Budget',
+                    label: legends[0] || 'First',
                     data: data.length > 0 ? data[0] : [],
                     backgroundColor: colors ?? defaultColors,
                 }, {
-                    label: 'Actual',
+                    label: legends[1] || 'Second',
                     data: data.length > 1 ? data[1] : [],
                     backgroundColor: colors?.map((color) => color + '80') ?? defaultColors.map((color) => color + '80'),
                 }],
@@ -25,9 +25,6 @@ export function BarChart({ data = [], labels = [], colors }) {
             options: {
                 responsive: true,
                 plugins: {
-                    // legend: {
-                    //     position: 'top',
-                    // },
                     tooltip: {
                         callbacks: ({
                             label: function (context) {

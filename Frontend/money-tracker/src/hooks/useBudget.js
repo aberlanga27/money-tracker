@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react"
 import { api } from "../boot/axios"
+import { useCallback, useEffect, useState } from "react"
 
 export function useBudget({ transactionsPerCategory, budgetTypeId = 0 }) {
     const [budgetsPerCategory, setBudgetsPerCategory] = useState([])
@@ -33,6 +33,7 @@ export function useBudget({ transactionsPerCategory, budgetTypeId = 0 }) {
     }, [transactionsPerCategory, budgetsPerCategory])
 
     return {
+        budgetsPerCategory,
         overallBudget,
         freeBudget,
         usedBudget

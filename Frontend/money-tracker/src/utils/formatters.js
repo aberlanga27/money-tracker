@@ -1,4 +1,4 @@
-function date(dateString) {
+export function date(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('es-MX', {
         year: 'numeric',
@@ -7,11 +7,9 @@ function date(dateString) {
     });
 }
 
-function currency(value) {
+export function currency(value) {
     return new Intl.NumberFormat('es-MX', {
         style: 'currency',
         currency: 'MXN',
     }).format(value);
 }
-
-export { date, currency };
