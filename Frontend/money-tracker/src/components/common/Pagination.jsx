@@ -4,6 +4,7 @@ import { Button } from "./Button";
 export function Pagination({
     noRecords,
     itemsPerPage = 10,
+    disabled = false,
     onNext = () => { },
     onPrevious = () => { }
 }) {
@@ -49,10 +50,10 @@ export function Pagination({
 
     return (
         <div className="pagination-controls flex justify-end items-center gap-2">
-            <Button onClick={handleFirst} disabled={currentPage === 1}>
+            <Button onClick={handleFirst} disabled={disabled || currentPage === 1}>
                 <span className="material-icons" style={{ fontSize: "0.8rem" }}>keyboard_double_arrow_left</span>
             </Button>
-            <Button onClick={handlePrevious} disabled={currentPage === 1}>
+            <Button onClick={handlePrevious} disabled={disabled || currentPage === 1}>
                 <span className="material-icons" style={{ fontSize: "0.8rem" }}>chevron_left</span>
             </Button>
 
@@ -60,10 +61,10 @@ export function Pagination({
                 Page {currentPage} of {totalPages}
             </span>
 
-            <Button onClick={handleNext} disabled={currentPage === totalPages}>
+            <Button onClick={handleNext} disabled={disabled || currentPage === totalPages}>
                 <span className="material-icons" style={{ fontSize: "0.8rem" }}>chevron_right</span>
             </Button>
-            <Button onClick={handleLast} disabled={currentPage === totalPages}>
+            <Button onClick={handleLast} disabled={disabled || currentPage === totalPages}>
                 <span className="material-icons" style={{ fontSize: "0.8rem" }}>keyboard_double_arrow_right</span>
             </Button>
         </div>

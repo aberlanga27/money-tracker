@@ -30,6 +30,8 @@ export function EntityManagement({
     const [fallbackRecords, setFallbackRecords] = useState([]);
     const [noRecords, setNoRecords] = useState(0);
 
+    const [disablePagination, setDisablePagination] = useState(false);
+
     const [selectedRecord, setSelectedRecord] = useState({});
 
     const [showAddEditModal, setShowAddEditModal] = useState(false);
@@ -73,10 +75,13 @@ export function EntityManagement({
     }, [endpoint, search, fallbackRecords]);
 
     const filterRecords = useCallback(() => {
-        if (!Object.keys(filter).length) {
+        if (Object.keys(filter).length == 0) {
             setRecords(fallbackRecords);
+            setDisablePagination(false);
             return;
         }
+
+        setDisablePagination(true);
 
         api.post(`/${endpoint}/Find`, filter)
             .then(({ data }) => {
@@ -310,6 +315,7 @@ export function EntityManagement({
 
             <Pagination
                 noRecords={noRecords}
+                disabled={disablePagination}
                 itemsPerPage={itemsPerPage}
                 onPrevious={getRecordsPerPage} onNext={getRecordsPerPage}
             />
