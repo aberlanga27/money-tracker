@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { api } from "../../boot/axios";
 import { BaseModal } from "./BaseModal";
 import { IndexedSelect } from "../common/IndexedSelect";
@@ -14,6 +14,9 @@ export function AddEditModal({
     onOk = () => { },
     onClose = () => { },
 }) {
+    const uniqueId = useId();
+    const componentId = `add-edit-modal-${uniqueId}`;
+
     const [formData, setFormData] = useState({});
 
     const handleInputChange = (e) => {
@@ -61,7 +64,7 @@ export function AddEditModal({
             <div className="flex flex-col gap-2">
                 {
                     properties.map((property, index) => (
-                        <div key={index} className="flex flex-col">
+                        <div key={`${componentId}-modal-property-${index}`} className="flex flex-col">
                             {
                                 property.type === "select"
                                     ? (

@@ -215,7 +215,7 @@ export function IndexedSelect({
                     options?.length > 0
                         ? options.map((option) => (
                             <div
-                                key={option[optionValue]}
+                                key={`${componentId}-option-${option[optionValue]}`}
                                 id={`option-${option[optionValue]}`}
                                 className={`option p-3 cursor-pointer transition-all duration-300 ${selectedOption === option[optionValue] ? "bg-primary text-white" : "hover:bg-primary/20"}`}
                                 onClick={() => {

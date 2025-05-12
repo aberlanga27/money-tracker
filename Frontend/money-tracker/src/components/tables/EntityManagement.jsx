@@ -260,7 +260,7 @@ export function EntityManagement({
                     <tr className="bg-primary text-white table w-full table-fixed">
                         {
                             displayProperties.map((property, index) => (
-                                <th key={index} className="p-2 text-left font-bold">{property.display}</th>
+                                <th key={`${componentId}-header-${index}`} className="p-2 text-left font-bold">{property.display}</th>
                             ))
                         }
                         <th className="p-2 text-left font-bold">Actions</th>
@@ -269,10 +269,10 @@ export function EntityManagement({
                 <tbody className="block max-h-[11rem] overflow-y-auto">
                     {
                         records.map((record, index) => (
-                            <tr key={index} className="border-b border-gray-300 table w-full table-fixed">
+                            <tr key={`${componentId}-record-${index}`} className="border-b border-gray-300 table w-full table-fixed">
                                 {
                                     displayProperties.map((property, index) => (
-                                        <td key={index} className="p-2 text-left">
+                                        <td key={`${componentId}-record-prop-${index}`} className="p-2 text-left">
                                             {
                                                 property.format === 'currency' ? currency(record[property.name]) :
                                                 property.type === 'number' ? record[property.name] :

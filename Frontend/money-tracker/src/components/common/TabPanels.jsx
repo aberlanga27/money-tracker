@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 
 function TabPanel({ children, value, index }) {
     return (
@@ -32,6 +32,9 @@ function TabPanelOption({ children, index, active = false, handleChange = () => 
 }
 
 export function TabPanels({ children, sections = [] }) {
+    const uniqueId = useId();
+    const componentId = `tab-panels-${uniqueId}`;
+
     const [value, setValue] = useState(0);
     const handleChange = (_, newValue) => {
         setValue(newValue);
@@ -43,7 +46,7 @@ export function TabPanels({ children, sections = [] }) {
                 {
                     sections.map((section, index) => (
                         <TabPanelOption
-                            key={index}
+                            key={`${componentId}-option-${index}`}
                             index={index}
                             active={value === index}
                             handleChange={handleChange}
