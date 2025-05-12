@@ -45,7 +45,7 @@ export function BaseModal({
 
     return (
         <div
-            className="modal-overlay flex items-center justify-center fixed inset-0 bg-black/50 z-50"
+            className="modal-overlay flex items-center justify-center fixed inset-0 bg-black/50 z-2000"
             onDoubleClick={handleClose}
             role="dialog"
             aria-labelledby={title}

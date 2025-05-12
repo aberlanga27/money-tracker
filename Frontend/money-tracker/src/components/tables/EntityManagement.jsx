@@ -1,4 +1,3 @@
-import './EntityManagement.css';
 import { AddEditModal } from '../modals/AddEditModal';
 import { api } from "../../boot/axios";
 import { Button, NegativeButton } from "../common/Button";
@@ -88,7 +87,7 @@ export function EntityManagement({
 
     const togleFilterPopUp = useCallback(() => {
         const filterPopUp = document.querySelector(`#${componentId} .filter-pop-up`);
-        filterPopUp.classList.toggle('visible');
+        filterPopUp.classList.toggle('hidden');
     }, [componentId]);
 
     const clearFilterProperty = useCallback((property) => {
@@ -215,11 +214,15 @@ export function EntityManagement({
                         </span>
                     </Button>
 
-                    <Button disabled={!allowMultipleAdd}>
-                        <span className="material-icons" style={{ fontSize: '1rem' }}>
-                            topic
-                        </span>
-                    </Button>
+                    {
+                        allowMultipleAdd && (
+                            <Button disabled={!allowMultipleAdd}>
+                                <span className="material-icons" style={{ fontSize: '1rem' }}>
+                                    topic
+                                </span>
+                            </Button>
+                        )
+                    }
 
                     <Button disabled={selectProperties.length == 0} onClick={togleFilterPopUp}>
                         <span className="material-icons" style={{ fontSize: '1rem' }}>
@@ -229,9 +232,9 @@ export function EntityManagement({
                 </div>
             </div>
 
-            <div className="filter-pop-up">
-                <div className='text-primary font-bold'>Filters</div>
-                <div className="selectors">
+            <div className="filter-pop-up hidden bg-white w-[300px] rounded-md p-2 shadow-lg border-1 border-gray-300 z-900 absolute right-0">
+                <div className='text-primary font-bold mb-1'>Filters</div>
+                <div className="selectors flex flex-col gap-1">
                     {
                         selectProperties.map((property, index) => (
                             <div key={`${componentId}-select-${index}`} className="filter-selectors">
@@ -247,24 +250,24 @@ export function EntityManagement({
                 </div>
             </div>
 
-            <table className="w-full table-auto bg-secondary/30 rounded-lg my-2">
-                <thead>
-                    <tr className="bg-primary text-white">
+            <table className="w-full table-auto bg-secondary/30 rounded-lg my-2 overflow-hidden min-h-[13.5rem]">
+                <thead className="sticky top-0">
+                    <tr className="bg-primary text-white table w-full table-fixed">
                         {
                             displayProperties.map((property, index) => (
-                                <th key={index} className="p-2">{property.display}</th>
+                                <th key={index} className="p-2 text-left font-bold">{property.display}</th>
                             ))
                         }
-                        <th>Actions</th>
+                        <th className="p-2 text-left font-bold">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="block max-h-[11rem] overflow-y-auto">
                     {
                         records.map((record, index) => (
-                            <tr key={index} className="border-b border-gray-300">
+                            <tr key={index} className="border-b border-gray-300 table w-full table-fixed">
                                 {
                                     displayProperties.map((property, index) => (
-                                        <td key={index} className="p-2">
+                                        <td key={index} className="p-2 text-left">
                                             {
                                                 property.format === 'currency' ? currency(record[property.name]) :
                                                 property.type === 'number' ? record[property.name] :
@@ -277,7 +280,7 @@ export function EntityManagement({
                                 }
                                 {
                                     (allowEdit || allowDelete) && (
-                                        <td className="p-2 flex justify-center items-center gap-1">
+                                        <td className="p-2 flex justify-center items-center text-left gap-1">
                                             {
                                                 allowEdit && (
                                                     <Button onClick={() => showEditModal(record)}>
@@ -305,6 +308,14 @@ export function EntityManagement({
                 </tbody>
             </table>
 
+            <Pagination
+                noRecords={noRecords}
+                itemsPerPage={itemsPerPage}
+                onPrevious={getRecordsPerPage} onNext={getRecordsPerPage}
+            />
+
+            {/* ... */}
+
             <AddEditModal endpoint={endpoint} displayName={displayName} indexKey={indexKey}
                 properties={displayProperties} modalMode={modalMode}
                 show={showAddEditModal}
@@ -317,12 +328,6 @@ export function EntityManagement({
                 show={showConfirmationModal}
                 onOk = {onConfirmationDeleteRecord}
                 onClose={() => { setShowConfirmationModal(false) }}
-            />
-
-            <Pagination
-                noRecords={noRecords}
-                itemsPerPage={itemsPerPage}
-                onPrevious={getRecordsPerPage} onNext={getRecordsPerPage}
             />
         </div>
     );
