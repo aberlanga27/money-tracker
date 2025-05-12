@@ -54,6 +54,30 @@ export function IndexedSelect({
 
     // ...
 
+    const handleSelectedOption = (option) => {
+        setDisplaySearch(option[optionLabel]);
+        setSelectedOption(option[optionValue]);
+
+        if (defaultValue === option[optionValue]) return;
+
+        onChange({
+            value: option[optionValue],
+            label: option[optionLabel],
+            option
+        });
+    };
+
+    const handelClearSelected = () => {
+        setSearch("");
+        setDisplaySearch("");
+        setSelectedOption(null);
+
+        setOptions(fallbackOptions);
+        onClear();
+    };
+
+    // ...
+
     const fetchOptions = () => {
         setLoading(true);
 
@@ -74,7 +98,7 @@ export function IndexedSelect({
     const fetchDefaultValue = () => {
         if (!defaultValue) return;
         if (fallbackOptions.some(option => option[optionValue] === defaultValue)) return;
-
+    
         api.get(`/${endpoint}/${defaultValue}`)
             .then(({ data }) => {
                 if (!data.status) {
@@ -123,28 +147,13 @@ export function IndexedSelect({
         optionsArrow.classList.remove("rotate");
     }
 
-    const handelClearSelected = () => {
-        setDisplaySearch("");
-        setSelectedOption(null);
-
-        setOptions(fallbackOptions);
-        onClear();
-    }
-
-    const handleSelectedOption = (option) => {
-        setDisplaySearch(option[optionLabel]);
-        setSelectedOption(option[optionValue]);
-
-        onChange({
-            value: option[optionValue],
-            label: option[optionLabel],
-            option
-        });
-    }
-
     // ...
 
     useEffect(() => {
+        setDisplaySearch("");
+        setSearch("");
+        setSelectedOption(null);
+
         fetchDefaultValue();
     }, [defaultValue]);
 

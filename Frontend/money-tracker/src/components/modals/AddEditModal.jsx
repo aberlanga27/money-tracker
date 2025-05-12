@@ -44,6 +44,8 @@ export function AddEditModal({
     useEffect(() => {
         if (modalMode === "edit")
             setFormData(record);
+        else
+            setFormData({});
 
         return () => setFormData({});
     }, [modalMode, record]);
