@@ -190,7 +190,7 @@ export function IndexedSelect({
         >
             <input
                 type="text"
-                placeholder={`Search ${label}`}
+                placeholder={`Select ${label}`}
                 className="p-2 border border-gray-300 rounded-lg"
                 value={displaySearch}
                 disabled={loading}
