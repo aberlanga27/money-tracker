@@ -7,7 +7,7 @@ const positionClasses = {
 }
 const typeClasses = {
     info: 'bg-primary',
-    success: 'bg-success',
+    success: 'bg-positive',
     error: 'bg-negative',
     warning: 'bg-warning',
 };
@@ -43,6 +43,17 @@ export function notify({ title = '', message = '', position = 'top-right', type 
     setTimeout(() => {
         notification.remove();
     }, timeout);
+}
+
+export function notifySuccess({ title = 'Success', message = 'Success', position = 'top-right', timeout = 5000 }) {
+    notify({
+        title,
+        message,
+        position,
+        type: 'success',
+        textColor: 'white',
+        timeout
+    });
 }
 
 export function notifyError({ title = 'Error', message = 'Error', position = 'top-right', timeout = 5000 }) {

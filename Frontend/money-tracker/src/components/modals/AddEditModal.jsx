@@ -2,6 +2,7 @@ import { useEffect, useId, useState } from "react";
 import { api } from "../../boot/axios";
 import { BaseModal } from "./BaseModal";
 import { IndexedSelect } from "../common/IndexedSelect";
+import { notifyError, notifySuccess } from "../../utils/notify";
 
 export function AddEditModal({
     endpoint,
@@ -39,10 +40,11 @@ export function AddEditModal({
             const { data } = await api[method](`/${endpoint}`, formData);
             if (data.status) {
                 onOk({ ...formData, [indexKey]: data.response[indexKey] });
+                notifySuccess({ message: `Record ${modalMode === "add" ? "added" : "updated"} successfully!`});
                 setFormData({});
             }
         } catch (error) {
-            console.error("Error submitting form:", error);
+            notifyError({ message: error});
         }
     };
 

@@ -1,6 +1,7 @@
 import { BaseModal } from "./BaseModal";
 
 export function ConfirmationModal({
+    children,
     show = false,
     title = "",
     message = "",
@@ -13,11 +14,12 @@ export function ConfirmationModal({
             onOk={onOk}
             onClose={onClose}
             title={title}
-            okLegend={'Accept'}
+            okLegend={'Delete'}
             cancelLegend={'Cancel'}
         >
             <div className="flex flex-col gap-2">
                 <p>{message}</p>
+                {children}
             </div>
         </BaseModal>
     );

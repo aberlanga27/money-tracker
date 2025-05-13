@@ -18,7 +18,6 @@ import { useCallback, useEffect, useId, useMemo, useState } from "react";
     - Pop up modal of filter, close on click outside
     - On delete modal, show the record to be deleted
     - Enhance the datatime selector on add/edit modal
-    - Add notification of success
     - Add doc
 */
 
@@ -348,7 +347,21 @@ export function EntityManagement({
                 show={showConfirmationModal}
                 onOk = {onConfirmationDeleteRecord}
                 onClose={() => { setShowConfirmationModal(false) }}
-            />
+            >
+                <div className="flex flex-col gap-2">
+                    {
+                        displayProperties.map((property, index) => (
+                            <p key={`${componentId}-confirmation-${index}`} className="text-xs">
+                                {`${property.display}: ${property.format === 'currency' ? currency(selectedRecord[property.name]) :
+                                    property.type === 'number' ? selectedRecord[property.name] :
+                                    property.type === 'date' ? date(selectedRecord[property.name]) :
+                                    property.type === 'select' ? selectedRecord[property.option.label] :
+                                    selectedRecord[property.name]}`}
+                            </p>
+                        ))
+                    }
+                </div>
+            </ConfirmationModal>
         </div>
     );
 }
