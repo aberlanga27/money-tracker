@@ -37,8 +37,10 @@ export function AddEditModal({
 
         try {
             const { data } = await api[method](`/${endpoint}`, formData);
-            if (data.status)
+            if (data.status) {
                 onOk({ ...formData, [indexKey]: data.response[indexKey] });
+                setFormData({});
+            }
         } catch (error) {
             console.error("Error submitting form:", error);
         }
