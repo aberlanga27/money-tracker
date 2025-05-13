@@ -29,26 +29,28 @@ export function Pagination({
     const totalPages = Math.ceil(noRecords / itemsPerPage);
 
     const handlePrevious = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-            onPrevious({
-                page: currentPage - 1,
-                itemsPerPage
-            });
-        }
+        if (disabled || currentPage === 1) return;
+
+        setCurrentPage(currentPage - 1);
+        onPrevious({
+            page: currentPage - 1,
+            itemsPerPage
+        });
     };
 
     const handleNext = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
-            onNext({
-                page: currentPage + 1,
-                itemsPerPage
-            });
-        }
+        if (disabled || currentPage === totalPages) return;
+
+        setCurrentPage(currentPage + 1);
+        onNext({
+            page: currentPage + 1,
+            itemsPerPage
+        });        
     };
 
     const handleFirst = () => {
+        if (disabled || currentPage === 1) return;
+
         setCurrentPage(1);
         onPrevious({
             page: 1,
@@ -57,10 +59,25 @@ export function Pagination({
     }
 
     const handleLast = () => {
+        if (disabled || currentPage === totalPages) return;
+
         setCurrentPage(totalPages);
         onNext({
             page: totalPages,
             itemsPerPage
+        });
+    }
+
+    const handlePageSizeChange = (e) => {
+        if (disabled) return;
+
+        const newSize = parseInt(e.target.value);
+        setItemsPerPage(newSize);
+        setCurrentPage(1);
+
+        onNext({
+            page: 1,
+            itemsPerPage: newSize
         });
     }
 
@@ -77,19 +94,11 @@ export function Pagination({
                             <select
                                 className="px-1 py-0.5 border border-gray-300 rounded-lg"
                                 value={itemsPerPage}
-                                onChange={(e) => {
-                                    if (disabled) return;
-                                    setItemsPerPage(parseInt(e.target.value));
-                                    setCurrentPage(1);
-                                    onNext({
-                                        page: 1,
-                                        itemsPerPage: parseInt(e.target.value)
-                                    });
-                                }}
+                                onChange={handlePageSizeChange}
                             >
                                 {
-                                    pageSizes.map((size) => (
-                                        <option key={size} value={size}>
+                                    pageSizes.map((size, index) => (
+                                        <option key={`${componentId}-option-${index}`} value={size}>
                                             {size}
                                         </option>
                                     ))
