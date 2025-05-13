@@ -8,6 +8,20 @@ import { notifyError } from "../../utils/notify";
 import { Pagination } from '../common/Pagination';
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
 
+/* TODOS
+    - Add a loading bottom bar
+    - Add multiple add modal using numbers, csv or excel
+    - Add max, min, required validations
+    - Show if error on modal dialog and disable save button
+    - Add on pagination the page size
+    - Enhance the search bar css
+    - Pop up modal of filter, close on click outside
+    - On delete modal, show the record to be deleted
+    - Enhance the datatime selector on add/edit modal
+    - Add notification of success
+    - Add doc
+*/
+
 export function EntityManagement({
     endpoint,
     indexKey,
