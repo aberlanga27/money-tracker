@@ -15,7 +15,6 @@ import { useCallback, useEffect, useId, useMemo, useState } from "react";
     - Show if error on modal dialog and disable save button
     - Enhance the search bar css
     - Pop up modal of filter, close on click outside
-    - On delete modal, show the record to be deleted
     - Enhance the datatime selector on add/edit modal
     - Add doc
 */
@@ -347,15 +346,22 @@ export function EntityManagement({
                 onOk = {onConfirmationDeleteRecord}
                 onClose={() => { setShowConfirmationModal(false) }}
             >
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-0 bg-secondary/30 p-2 rounded-lg">
                     {
                         displayProperties.map((property, index) => (
                             <p key={`${componentId}-confirmation-${index}`} className="text-xs">
-                                {`${property.display}: ${property.format === 'currency' ? currency(selectedRecord[property.name]) :
-                                    property.type === 'number' ? selectedRecord[property.name] :
-                                    property.type === 'date' ? date(selectedRecord[property.name]) :
-                                    property.type === 'select' ? selectedRecord[property.option.label] :
-                                    selectedRecord[property.name]}`}
+                                {
+                                    <span>
+                                        <span className="font-bold">{property.display}: </span>
+                                        {
+                                            property.format === 'currency' ? currency(selectedRecord[property.name]) :
+                                            property.type === 'number' ? selectedRecord[property.name] :
+                                            property.type === 'date' ? date(selectedRecord[property.name]) :
+                                            property.type === 'select' ? selectedRecord[property.option.label] :
+                                            selectedRecord[property.name]
+                                        }
+                                    </span>
+                                }
                             </p>
                         ))
                     }
