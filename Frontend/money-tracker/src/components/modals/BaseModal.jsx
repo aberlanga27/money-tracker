@@ -11,6 +11,7 @@ import { Button, PlainButton } from '../common/Button';
  * @param {React.ReactNode} props.children - Content of the modal
  * @param {string} props.okLegend - Label for the Ok button
  * @param {string} props.closeLegend - Label for the Close button
+ * @returns {JSX.Element|null} Modal component or null if not visible
  */
 export function BaseModal({
     show,

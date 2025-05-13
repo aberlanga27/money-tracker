@@ -13,7 +13,6 @@ import { useCallback, useEffect, useId, useMemo, useState } from "react";
     - Add multiple add modal using numbers, csv or excel
     - Add max, min, required validations
     - Show if error on modal dialog and disable save button
-    - Add on pagination the page size
     - Enhance the search bar css
     - Pop up modal of filter, close on click outside
     - On delete modal, show the record to be deleted
@@ -26,7 +25,7 @@ export function EntityManagement({
     indexKey,
     displayName,
     properties = [],
-    itemsPerPage = 5,
+    defaultItemsPerPage = 5,
     allowAdd = false,
     allowEdit = false,
     allowDelete = false,
@@ -57,7 +56,7 @@ export function EntityManagement({
 
     // ...
 
-    const getRecordsPerPage = useCallback(({ page }) => {
+    const getRecordsPerPage = useCallback(({ page, itemsPerPage }) => {
         api.get(`${endpoint}?pageSize=${itemsPerPage}&offsetSize=${(page - 1) * itemsPerPage}`)
             .then(({ data }) => {
                 if (!data.status) {
@@ -70,7 +69,7 @@ export function EntityManagement({
                 setNoRecords(data.totalRecords);
             })
             .catch(error => notifyError({ message: error }));
-    }, [endpoint, itemsPerPage]);
+    }, [endpoint]);
 
     const searchRecordsOnDatabase = useCallback(() => {
         const needle = search?.trim().toLowerCase();
@@ -184,7 +183,7 @@ export function EntityManagement({
     // ...
 
     useEffect(() => {
-        getRecordsPerPage({ page: 1 });
+        getRecordsPerPage({ page: 1, itemsPerPage: defaultItemsPerPage });
 
         return () => {
             setRecords([]);
@@ -196,7 +195,7 @@ export function EntityManagement({
             setSelectedRecord({});
             setModalMode("add");
         }
-    }, [getRecordsPerPage])
+    }, [getRecordsPerPage, defaultItemsPerPage])
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -329,7 +328,7 @@ export function EntityManagement({
             <Pagination
                 noRecords={noRecords}
                 disabled={disablePagination}
-                itemsPerPage={itemsPerPage}
+                defaultItemsPerPage={defaultItemsPerPage}
                 onPrevious={getRecordsPerPage} onNext={getRecordsPerPage}
             />
 
