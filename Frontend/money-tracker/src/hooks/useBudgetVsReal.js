@@ -5,7 +5,11 @@ export function useBudgetVsReal({ transactionsPerCategory, budgetsPerCategory })
     const [budgetVsRealLabels, setBudgetVsRealLabels] = useState([])
 
     useEffect(() => {
-        if (transactionsPerCategory.length === 0 || budgetsPerCategory.length === 0) return
+        if (transactionsPerCategory.length === 0 || budgetsPerCategory.length === 0) {
+            setBudgetVsRealData([])
+            setBudgetVsRealLabels([])
+            return
+        }
 
         const data = {}
         budgetsPerCategory.forEach((budget) => {

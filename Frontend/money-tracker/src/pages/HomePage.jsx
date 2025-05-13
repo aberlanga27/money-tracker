@@ -19,13 +19,13 @@ export default function HomePage() {
         transactionsPerCategoryData,
         transactionsPerCategoryLabels,
         getTransactionsPerCategory
-    } = useTransactionsPerCategory()
+    } = useTransactionsPerCategory({ budgetTypeId })
 
     const {
         transactionsPerBankData,
         transactionsPerBankLabels,
         getTransactionsPerBank
-    } = useTransactionsPerBank()
+    } = useTransactionsPerBank({ budgetTypeId })
 
     const {
         budgetsPerCategory,

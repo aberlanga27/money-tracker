@@ -1,16 +1,15 @@
 import { api } from "../boot/axios";
+import { getDatesByBudgetType } from "../utils/date";
 import { notifyError } from "../utils/notify";
 import { useCallback, useEffect, useState } from "react";
 
-export function useTransactionsPerCategory() {
+export function useTransactionsPerCategory({ budgetTypeId }) {
     const [transactionsPerCategory, setTransactionsPerCategory] = useState([])
     const [data, setData] = useState([])
     const [labels, setLabels] = useState([])
 
     const getTransactionsPerCategory = useCallback(() => {        
-        const today = new Date()
-        const startDate = new Date(Date.UTC(today.getFullYear(), today.getMonth(), 1, 0, 0, 0))
-        const endDate = new Date(Date.UTC(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59))
+        const { startDate, endDate } = getDatesByBudgetType({ budgetTypeId })
 
         api.post('/Transaction/GroupByCategory', {
             startDate: startDate,
@@ -19,8 +18,8 @@ export function useTransactionsPerCategory() {
             .then(({ data }) => {
                 setTransactionsPerCategory(data.response)
             })
-            .catch(error => notifyError({ message: 'Error fetching transactions by category:', error }))
-    }, [setTransactionsPerCategory])
+            .catch(error => notifyError({ message: error }))
+    }, [setTransactionsPerCategory, budgetTypeId])
 
     useEffect(() => {
         getTransactionsPerCategory()
