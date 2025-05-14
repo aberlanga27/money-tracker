@@ -10,7 +10,14 @@ import { Button } from "./Button";
  * @param {boolean} [props.disabled=false] - Disable pagination controls
  * @param {function} [props.onNext] - Callback for next page
  * @param {function} [props.onPrevious] - Callback for previous page
- * @returns {JSX.Element} Pagination component
+ * 
+ * * @example
+ *    <Pagination
+ *        noRecords={noRecords}
+ *        disabled={disablePagination}
+ *        defaultItemsPerPage={defaultItemsPerPage}
+ *        onPrevious={getRecordsPerPage} onNext={getRecordsPerPage}
+ *    />
  */
 export function Pagination({
     noRecords,

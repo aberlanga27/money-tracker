@@ -4,6 +4,7 @@ import { Button, NegativeButton } from "../common/Button";
 import { ConfirmationModal } from '../modals/ConfirmationModal';
 import { currency, date } from "../../utils/formatters";
 import { IndexedSelect } from '../common/IndexedSelect';
+import { Input } from '../common/Input';
 import { notifyError } from "../../utils/notify";
 import { Pagination } from '../common/Pagination';
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
@@ -215,13 +216,16 @@ export function EntityManagement({
     return (
         <div id={componentId} className='entity-management-table text-sm'>
             <div className="actions-bar flex justify-between items-center">
-                <input
+                <Input
                     type="text"
-                    placeholder={`Search ${displayName}`}
+                    placeholder="Search"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="p-2 border border-gray-300 rounded-lg"
-                />
+                >
+                    <span className="material-icons pl-2 pr-0 text-gray-500" style={{ fontSize: '1.2rem' }}>
+                        search
+                    </span>
+                </Input>
 
                 <div className="actions flex items-center gap-1">
                     <Button disabled={!allowAdd} onClick={showAddModal}>
