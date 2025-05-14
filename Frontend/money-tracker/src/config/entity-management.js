@@ -81,7 +81,7 @@ const transactions = {
     displayName: 'Transactions',
     properties: [
         { name: 'transactionId', display: 'ID', type: 'number', required: true },
-        { name: 'transactionDate', display: 'Date', type: 'date', required: true },
+        { name: 'transactionDate', display: 'Date', type: 'datetime-local', required: true },
         { name: 'bankId', display: 'Bank', type: 'select', option: { name: 'Bank', value: 'bankId', label: 'bankName' }, required: true },
         { name: 'transactionTypeId', display: 'Type', type: 'select', option: { name: 'TransactionType', value: 'transactionTypeId', label: 'transactionTypeName' }, required: true },
         { name: 'transactionCategoryId', display: 'Category', type: 'select', option: { name: 'TransactionCategory', value: 'transactionCategoryId', label: 'transactionCategoryName' }, required: true },
