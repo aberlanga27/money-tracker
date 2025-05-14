@@ -11,11 +11,18 @@ import { useEffect, useId } from "react"
  * <LoadingBar loading={true} step={0.1} />
 */
 export function LoadingBar({
-    loading = false,
+    loading,
     step = 0.1,
 }) {
     const uniqueId = useId()
     const componentId = `loading-bar-${uniqueId}`
+
+     useEffect(() => {
+        const loadingBar = document.getElementById(componentId)
+        if (!loadingBar) return
+
+        loadingBar.classList.toggle('opacity-0', loading)
+     }, [componentId, loading])
 
     useEffect(() => {
         const loadingBar = document.getElementById(componentId)
@@ -31,8 +38,8 @@ export function LoadingBar({
     }, [componentId, step])
     
     return (
-        loading && (<div id={componentId} className="w-full bg-gray-200 rounded-full h-1 dark:bg-gray-200 my-0.5 opacity-0">
-            <div className="bg-primary/90 h-1 rounded-full"></div>
-        </div>)
+        <div id={componentId} className="w-full bg-gray-200 rounded-full h-0.5 dark:bg-gray-200 my-0.5 opacity-0">
+            <div className="bg-primary/90 h-0.5 rounded-full"></div>
+        </div>
     )
 }

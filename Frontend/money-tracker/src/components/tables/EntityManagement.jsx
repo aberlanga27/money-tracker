@@ -12,7 +12,6 @@ import { LoadingBar } from '../common/LoadingBar';
 
 /* TODOS
     - Pop up modal of filter, close on click outside
-    - Add a loading bottom bar
     - Add multiple add modal using numbers, csv or excel
     - Add doc
 */
@@ -276,7 +275,7 @@ export function EntityManagement({
                 </div>
             </div>
 
-            {/* <LoadingBar loading={loading} /> */}
+            <LoadingBar loading={loading} />
 
             <table className="w-full table-auto bg-secondary/30 rounded-lg mt-0.5 mb-2 overflow-hidden min-h-[13.5rem]">
                 <thead className="sticky top-0">
