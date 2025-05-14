@@ -1,5 +1,5 @@
 import { useId, useState } from "react";
-import { Button } from "./Button";
+import { IconButton } from "./Button";
 
 /**
  * Pagination Component
@@ -52,7 +52,7 @@ export function Pagination({
         onNext({
             page: currentPage + 1,
             itemsPerPage
-        });        
+        });
     };
 
     const handleFirst = () => {
@@ -118,23 +118,15 @@ export function Pagination({
             </div>
 
             <div className="pagination-controls flex items-center gap-1">
-                <Button onClick={handleFirst} disabled={disabled || currentPage === 1}>
-                    <span className="material-icons" style={{ fontSize: "0.8rem" }}>keyboard_double_arrow_left</span>
-                </Button>
-                <Button onClick={handlePrevious} disabled={disabled || currentPage === 1}>
-                    <span className="material-icons" style={{ fontSize: "0.8rem" }}>chevron_left</span>
-                </Button>
+                <IconButton icon="keyboard_double_arrow_left" fontSize="0.8rem" onClick={handleFirst} disabled={disabled || currentPage === 1} />
+                <IconButton icon="chevron_left" fontSize="0.8rem" onClick={handlePrevious} disabled={disabled || currentPage === 1} />
 
                 <span className="text-sm">
                     {currentPage} / {totalPages}
                 </span>
 
-                <Button onClick={handleNext} disabled={disabled || currentPage === totalPages}>
-                    <span className="material-icons" style={{ fontSize: "0.8rem" }}>chevron_right</span>
-                </Button>
-                <Button onClick={handleLast} disabled={disabled || currentPage === totalPages}>
-                    <span className="material-icons" style={{ fontSize: "0.8rem" }}>keyboard_double_arrow_right</span>
-                </Button>
+                <IconButton icon="chevron_right" fontSize="0.8rem" onClick={handleNext} disabled={disabled || currentPage === totalPages} />
+                <IconButton icon="keyboard_double_arrow_right" fontSize="0.8rem" onClick={handleLast} disabled={disabled || currentPage === totalPages} />
             </div>
         </div>
     );

@@ -1,14 +1,14 @@
 import { AddEditModal } from '../modals/AddEditModal';
 import { api } from "../../boot/axios";
-import { Button, NegativeButton } from "../common/Button";
 import { ConfirmationModal } from '../modals/ConfirmationModal';
 import { currency, date } from "../../utils/formatters";
+import { IconButton, NegativeIconButton } from "../common/Button";
 import { IndexedSelect } from '../common/IndexedSelect';
 import { Input } from '../common/Input';
+import { LoadingBar } from '../common/LoadingBar';
 import { notifyError } from "../../utils/notify";
 import { Pagination } from '../common/Pagination';
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
-import { LoadingBar } from '../common/LoadingBar';
 
 /* TODOS
     - Pop up modal of filter, close on click outside
@@ -233,27 +233,15 @@ export function EntityManagement({
                 </Input>
 
                 <div className="actions flex gap-1">
-                    <Button disabled={!allowAdd} onClick={showAddModal}>
-                        <span className="material-icons" style={{ fontSize: '1rem' }}>
-                            add
-                        </span>
-                    </Button>
+                    <IconButton icon="add" disabled={!allowAdd} onClick={showAddModal} />
 
                     {
                         allowMultipleAdd && (
-                            <Button disabled={!allowMultipleAdd}>
-                                <span className="material-icons" style={{ fontSize: '1rem' }}>
-                                    topic
-                                </span>
-                            </Button>
+                            <IconButton icon="topic" disabled={!allowMultipleAdd} onClick={showAddModal} />
                         )
                     }
 
-                    <Button disabled={selectProperties.length == 0} onClick={togleFilterPopUp}>
-                        <span className="material-icons" style={{ fontSize: '1rem' }}>
-                            filter_list
-                        </span>
-                    </Button>
+                    <IconButton icon="filter_list" disabled={selectProperties.length == 0} onClick={togleFilterPopUp} />
                 </div>
             </div>
 
@@ -310,20 +298,12 @@ export function EntityManagement({
                                         <td className="p-2 flex justify-center items-center text-left gap-1">
                                             {
                                                 allowEdit && (
-                                                    <Button onClick={() => showEditModal(record)}>
-                                                        <span className="material-icons" style={{ fontSize: '0.8rem' }}>
-                                                            edit
-                                                        </span>
-                                                    </Button>
+                                                    <IconButton icon="edit" fontSize='0.8rem' onClick={() => showEditModal(record)} />
                                                 )
                                             }
                                             {
                                                 allowDelete && (
-                                                    <NegativeButton onClick={() => { showDeleteModal(record) }}>
-                                                        <span className="material-icons" style={{ fontSize: '0.8rem' }}>
-                                                            delete
-                                                        </span>
-                                                    </NegativeButton>
+                                                    <NegativeIconButton icon="delete" fontSize='0.8rem' onClick={() => { showDeleteModal(record) }} />
                                                 )
                                             }
                                         </td>
