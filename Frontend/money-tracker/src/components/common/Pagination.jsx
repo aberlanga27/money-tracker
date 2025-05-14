@@ -102,6 +102,7 @@ export function Pagination({
                                 className="px-1 py-0.5 border border-gray-300 rounded-lg"
                                 value={itemsPerPage}
                                 onChange={handlePageSizeChange}
+                                disabled={disabled}
                             >
                                 {
                                     pageSizes.map((size, index) => (

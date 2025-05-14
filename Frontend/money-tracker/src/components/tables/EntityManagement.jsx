@@ -10,13 +10,12 @@ import { Pagination } from '../common/Pagination';
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
 
 /* TODOS
-    - Add a loading bottom bar
-    - Add multiple add modal using numbers, csv or excel
     - Add max, min, required validations
     - Show if error on modal dialog and disable save button
-    - Enhance the search bar css
-    - Pop up modal of filter, close on click outside
     - Enhance the datatime selector on add/edit modal
+    - Pop up modal of filter, close on click outside
+    - Add a loading bottom bar
+    - Add multiple add modal using numbers, csv or excel
     - Add doc
 */
 
