@@ -248,7 +248,7 @@ export function EntityManagement({
                 </div>
             </div>
 
-            <div className="filter-pop-up hidden bg-white w-[300px] rounded-md p-2 shadow-lg border-1 border-gray-300 z-900 absolute right-0">
+            <div className="filter-pop-up hidden bg-white w-[300px] rounded-md p-2 shadow-lg border-1 border-gray-300/70 z-900 absolute right-2">
                 <div className='text-primary font-bold mb-1'>Filters</div>
                 <div className="selectors flex flex-col gap-1">
                     {
