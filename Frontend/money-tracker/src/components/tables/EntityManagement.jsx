@@ -10,8 +10,7 @@ import { Pagination } from '../common/Pagination';
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
 
 /* TODOS
-    - Show if error on modal dialog and disable save button
-    - Enhance the datatime selector on add/edit modal
+    - Fix/Enhance the datatime selector on add/edit modal
     - Pop up modal of filter, close on click outside
     - Add a loading bottom bar
     - Add multiple add modal using numbers, csv or excel
