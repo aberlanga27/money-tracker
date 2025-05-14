@@ -4,10 +4,10 @@ const transactionCategories = {
     displayName: 'Categories',
     properties: [
         { name: 'transactionCategoryId', display: 'ID', type: 'number', required: true },
-        { name: 'transactionCategoryName', display: 'Name', type: 'string', min: 1, max: 100, required: true },
-        { name: 'transactionCategoryDescription', display: 'Description', type: 'string', min: 1, max: 100, required: true },
-        { name: 'transactionCategoryIcon', display: 'Icon', type: 'string', min: 1, max: 100, required: true },
-        { name: 'transactionCategoryColor', display: 'Color', type: 'string', min: 1, max: 6, required: true }
+        { name: 'transactionCategoryName', display: 'Name', type: 'text', min: 1, max: 100, required: true },
+        { name: 'transactionCategoryDescription', display: 'Description', type: 'text', min: 1, max: 100, required: true },
+        { name: 'transactionCategoryIcon', display: 'Icon', type: 'text', min: 1, max: 100, required: true },
+        { name: 'transactionCategoryColor', display: 'Color', type: 'text', min: 1, max: 6, required: true }
     ],
     allowAdd: true,
     allowEdit: true,
@@ -21,8 +21,8 @@ const transactionTypes = {
     displayName: 'Transaction Types',
     properties: [
         { name: 'transactionTypeId', display: 'ID', type: 'number', required: true },
-        { name: 'transactionTypeName', display: 'Name', type: 'string', min: 1, max: 100, required: true },
-        { name: 'transactionTypeDescription', display: 'Description', type: 'string', min: 1, max: 100, required: true }
+        { name: 'transactionTypeName', display: 'Name', type: 'text', min: 1, max: 100, required: true },
+        { name: 'transactionTypeDescription', display: 'Description', type: 'text', min: 1, max: 100, required: true }
     ],
     allowAdd: true,
     allowEdit: true,
@@ -36,7 +36,7 @@ const banks = {
     displayName: 'Banks',
     properties: [
         { name: 'bankId', display: 'ID', type: 'number', required: true },
-        { name: 'bankName', display: 'Name', type: 'string', min: 1, max: 100, required: true }
+        { name: 'bankName', display: 'Name', type: 'text', min: 1, max: 100, required: true }
     ],
     allowAdd: true,
     allowEdit: true,
@@ -50,8 +50,8 @@ const budgetTypes = {
     displayName: 'Budget Types',
     properties: [
         { name: 'budgetTypeId', display: 'ID', type: 'number', required: true },
-        { name: 'budgetTypeName', display: 'Name', type: 'string', min: 1, max: 100, required: true },
-        { name: 'budgetTypeDays', display: 'Days', type: 'number', min: 1, max: 100, required: true }
+        { name: 'budgetTypeName', display: 'Name', type: 'text', min: 1, max: 100, required: true },
+        { name: 'budgetTypeDays', display: 'Days', type: 'number', min: 1, max: 31, required: true }
     ],
     allowAdd: true,
     allowEdit: true,
@@ -67,7 +67,7 @@ const budgets = {
         { name: 'budgetId', display: 'ID', type: 'number', required: true },
         { name: 'transactionCategoryId', display: 'Category', type: 'select', option: { name: 'TransactionCategory', value: 'transactionCategoryId', label: 'transactionCategoryName' }, required: true },
         { name: 'budgetTypeId', display: 'Type', type: 'select', option: { name: 'BudgetType', value: 'budgetTypeId', label: 'budgetTypeName' }, required: true },
-        { name: 'budgetAmount', display: 'Amount', type: 'number', format:'currency', min: 1, max: 100, required: true },
+        { name: 'budgetAmount', display: 'Amount', type: 'number', format:'currency', min: 1, max: 100000, required: true },
     ],
     allowAdd: true,
     allowEdit: true,
@@ -85,8 +85,8 @@ const transactions = {
         { name: 'bankId', display: 'Bank', type: 'select', option: { name: 'Bank', value: 'bankId', label: 'bankName' }, required: true },
         { name: 'transactionTypeId', display: 'Type', type: 'select', option: { name: 'TransactionType', value: 'transactionTypeId', label: 'transactionTypeName' }, required: true },
         { name: 'transactionCategoryId', display: 'Category', type: 'select', option: { name: 'TransactionCategory', value: 'transactionCategoryId', label: 'transactionCategoryName' }, required: true },
-        { name: 'transactionAmount', display: 'Amount', type: 'number', format: 'currency', required: true },
-        { name: 'transactionDescription', display: 'Description', type: 'string', min: 1, max: 150, required: true }
+        { name: 'transactionAmount', display: 'Amount', type: 'number', format: 'currency', min: 1, max: 100000, required: true },
+        { name: 'transactionDescription', display: 'Description', type: 'text', min: 1, max: 150, required: true }
     ],
     allowAdd: true,
     allowEdit: true,

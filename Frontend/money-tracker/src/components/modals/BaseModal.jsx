@@ -11,7 +11,22 @@ import { Button, PlainButton } from '../common/Button';
  * @param {React.ReactNode} props.children - Content of the modal
  * @param {string} props.okLegend - Label for the Ok button
  * @param {string} props.closeLegend - Label for the Close button
- * @returns {JSX.Element|null} Modal component or null if not visible
+ * @param {boolean} props.disableOk - Disables the Ok button
+ * @param {boolean} props.disableClose - Disables the Close button
+ * 
+ * @example
+ * <BaseModal
+ *    show={show}
+ *    onOk={handleOk}
+ *    onClose={handleClose}
+ *    title="My Modal"
+ *    okLegend="Confirm"
+ *    closeLegend="Cancel"
+ *    disableOk={false}
+ *    disableClose={false}
+ * >
+ *   <p>This is the content of the modal.</p>
+ * </BaseModal>
  */
 export function BaseModal({
     show,
@@ -20,7 +35,9 @@ export function BaseModal({
     title = 'Title',
     children = 'Content',
     okLegend = 'Ok',
-    closeLegend = 'Close'
+    closeLegend = 'Close',
+    disableOk = false,
+    disableClose = false
 }) {
     const handleOk = useCallback(() => {
         if (onOk) onOk();
@@ -67,10 +84,10 @@ export function BaseModal({
                 </div>
 
                 <div className="modal-actions flex justify-end px-6 pb-6 space-x-2">
-                    <PlainButton onClick={handleClose} className='w-full'>
+                    <PlainButton onClick={handleClose} disabled={disableClose} className='w-full'>
                         {closeLegend}
                     </PlainButton>
-                    <Button onClick={handleOk} className='w-full'>
+                    <Button onClick={handleOk} disabled={disableOk} className='w-full'>
                         {okLegend}
                     </Button>
                 </div>
