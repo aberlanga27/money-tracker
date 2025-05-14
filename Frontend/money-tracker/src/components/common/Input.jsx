@@ -94,13 +94,15 @@ export function Input({
                 {childrenPosition === 'append' && (children)}
             </div>
 
-            <div className="validations text-xs pl-1">
-                {validations.map((validation, index) => (
-                    <div key={`${componentId}-validation-${index}`} className="text-negative">
-                        {validation}
-                    </div>
-                ))}
-            </div>
+            <ul className="validations text-xs pl-1">
+                {
+                    validations.map((validation, index) => (
+                        <li key={`${componentId}-validation-${index}`} className="text-negative">
+                            {validation}
+                        </li>
+                    ))
+                }
+            </ul>
         </div>
     )
 }
