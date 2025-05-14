@@ -8,6 +8,7 @@ import { Input } from '../common/Input';
 import { notifyError } from "../../utils/notify";
 import { Pagination } from '../common/Pagination';
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
+import { LoadingBar } from '../common/LoadingBar';
 
 /* TODOS
     - Pop up modal of filter, close on click outside
@@ -31,6 +32,7 @@ export function EntityManagement({
     const uniqueId = useId();
     const componentId = `entity-management-${uniqueId}`;
 
+    const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState({});
 
@@ -40,11 +42,9 @@ export function EntityManagement({
 
     const [disablePagination, setDisablePagination] = useState(false);
 
-    const [selectedRecord, setSelectedRecord] = useState({});
-
-    const [showAddEditModal, setShowAddEditModal] = useState(false);
     const [modalMode, setModalMode] = useState("add");
-
+    const [selectedRecord, setSelectedRecord] = useState({});
+    const [showAddEditModal, setShowAddEditModal] = useState(false);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
     const displayProperties = useMemo(() => properties.filter(property => property.name !== indexKey), [properties, indexKey]);
@@ -53,6 +53,8 @@ export function EntityManagement({
     // ...
 
     const getRecordsPerPage = useCallback(({ page, itemsPerPage }) => {
+        setLoading(true);
+
         api.get(`${endpoint}?pageSize=${itemsPerPage}&offsetSize=${(page - 1) * itemsPerPage}`)
             .then(({ data }) => {
                 if (!data.status) {
@@ -64,12 +66,14 @@ export function EntityManagement({
                 setFallbackRecords(data.response);
                 setNoRecords(data.totalRecords);
             })
-            .catch(error => notifyError({ message: error }));
+            .catch(error => notifyError({ message: error }))
+            .finally(() => setLoading(false));
     }, [endpoint]);
 
     const searchRecordsOnDatabase = useCallback(() => {
-        const needle = search?.trim().toLowerCase();
+        setLoading(true);
 
+        const needle = search?.trim().toLowerCase();
         if (!needle || needle.length < 3) {
             setRecords(fallbackRecords);
             return;
@@ -80,6 +84,7 @@ export function EntityManagement({
                 setRecords(data);
             })
             .catch((error) => notifyError({ message: error }))
+            .finally(() => setLoading(false));
     }, [endpoint, search, fallbackRecords]);
 
     const filterRecords = useCallback(() => {
@@ -89,6 +94,7 @@ export function EntityManagement({
             return;
         }
 
+        setLoading(true);
         setDisablePagination(true);
 
         api.post(`/${endpoint}/Find`, filter)
@@ -96,6 +102,7 @@ export function EntityManagement({
                 setRecords(data);
             })
             .catch((error) => notifyError({ message: error }))
+            .finally(() => setLoading(false));
     }, [endpoint, filter, fallbackRecords]);
 
     const togleFilterPopUp = useCallback(() => {
@@ -182,14 +189,17 @@ export function EntityManagement({
         getRecordsPerPage({ page: 1, itemsPerPage: defaultItemsPerPage });
 
         return () => {
+            setLoading(false);
+            setSearch("");
+            setFilter({});
             setRecords([]);
             setFallbackRecords([]);
             setNoRecords(0);
-            setSearch("");
-            setFilter({});
-            setShowAddEditModal(false);
-            setSelectedRecord({});
+            setDisablePagination(false);
             setModalMode("add");
+            setSelectedRecord({});
+            setShowAddEditModal(false);
+            setShowConfirmationModal(false)
         }
     }, [getRecordsPerPage, defaultItemsPerPage])
 
@@ -211,7 +221,7 @@ export function EntityManagement({
 
     return (
         <div id={componentId} className='entity-management-table text-sm'>
-            <div className="actions-bar flex justify-between items-center">
+            <div className="actions-bar flex justify-between items-end mb-1">
                 <Input
                     type="text"
                     placeholder="Search"
@@ -223,7 +233,7 @@ export function EntityManagement({
                     </span>
                 </Input>
 
-                <div className="actions flex items-center gap-1">
+                <div className="actions flex gap-1">
                     <Button disabled={!allowAdd} onClick={showAddModal}>
                         <span className="material-icons" style={{ fontSize: '1rem' }}>
                             add
@@ -266,7 +276,9 @@ export function EntityManagement({
                 </div>
             </div>
 
-            <table className="w-full table-auto bg-secondary/30 rounded-lg my-2 overflow-hidden min-h-[13.5rem]">
+            {/* <LoadingBar loading={loading} /> */}
+
+            <table className="w-full table-auto bg-secondary/30 rounded-lg mt-0.5 mb-2 overflow-hidden min-h-[13.5rem]">
                 <thead className="sticky top-0">
                     <tr className="bg-primary text-white table w-full table-fixed">
                         {
@@ -286,10 +298,10 @@ export function EntityManagement({
                                         <td key={`${componentId}-record-prop-${index}`} className="p-2 text-left">
                                             {
                                                 property.format === 'currency' ? currency(record[property.name]) :
-                                                property.type === 'number' ? record[property.name] :
-                                                ['date', 'datetime', 'datetime-local'].includes(property.type) ? date(record[property.name]) :
-                                                property.type === 'select' ? record[property.option.label] :
-                                                record[property.name]
+                                                    property.type === 'number' ? record[property.name] :
+                                                        ['date', 'datetime', 'datetime-local'].includes(property.type) ? date(record[property.name]) :
+                                                            property.type === 'select' ? record[property.option.label] :
+                                                                record[property.name]
                                             }
                                         </td>
                                     ))
@@ -308,7 +320,7 @@ export function EntityManagement({
                                             }
                                             {
                                                 allowDelete && (
-                                                    <NegativeButton onClick={() => {showDeleteModal(record)}}>
+                                                    <NegativeButton onClick={() => { showDeleteModal(record) }}>
                                                         <span className="material-icons" style={{ fontSize: '0.8rem' }}>
                                                             delete
                                                         </span>
@@ -343,7 +355,7 @@ export function EntityManagement({
 
             <ConfirmationModal title='Delete record' message={`Are you sure you want to delete this record?`}
                 show={showConfirmationModal}
-                onOk = {onConfirmationDeleteRecord}
+                onOk={onConfirmationDeleteRecord}
                 onClose={() => { setShowConfirmationModal(false) }}
             >
                 <div className="flex flex-col gap-0 bg-secondary/30 p-2 rounded-lg">
@@ -355,10 +367,10 @@ export function EntityManagement({
                                         <span className="font-bold">{property.display}: </span>
                                         {
                                             property.format === 'currency' ? currency(selectedRecord[property.name]) :
-                                            property.type === 'number' ? selectedRecord[property.name] :
-                                            ['date', 'datetime', 'datetime-local'].includes(property.type) ? date(selectedRecord[property.name]) :
-                                            property.type === 'select' ? selectedRecord[property.option.label] :
-                                            selectedRecord[property.name]
+                                                property.type === 'number' ? selectedRecord[property.name] :
+                                                    ['date', 'datetime', 'datetime-local'].includes(property.type) ? date(selectedRecord[property.name]) :
+                                                        property.type === 'select' ? selectedRecord[property.option.label] :
+                                                            selectedRecord[property.name]
                                         }
                                     </span>
                                 }
