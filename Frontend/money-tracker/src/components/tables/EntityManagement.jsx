@@ -287,7 +287,7 @@ export function EntityManagement({
                                             {
                                                 property.format === 'currency' ? currency(record[property.name]) :
                                                 property.type === 'number' ? record[property.name] :
-                                                property.type === 'date' ? date(record[property.name]) :
+                                                ['date', 'datetime', 'datetime-local'].includes(property.type) ? date(record[property.name]) :
                                                 property.type === 'select' ? record[property.option.label] :
                                                 record[property.name]
                                             }
@@ -356,7 +356,7 @@ export function EntityManagement({
                                         {
                                             property.format === 'currency' ? currency(selectedRecord[property.name]) :
                                             property.type === 'number' ? selectedRecord[property.name] :
-                                            property.type === 'date' ? date(selectedRecord[property.name]) :
+                                            ['date', 'datetime', 'datetime-local'].includes(property.type) ? date(selectedRecord[property.name]) :
                                             property.type === 'select' ? selectedRecord[property.option.label] :
                                             selectedRecord[property.name]
                                         }
