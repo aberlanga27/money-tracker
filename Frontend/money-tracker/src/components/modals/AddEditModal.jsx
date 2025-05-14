@@ -1,8 +1,9 @@
-import { useEffect, useId, useState } from "react";
 import { api } from "../../boot/axios";
 import { BaseModal } from "./BaseModal";
 import { IndexedSelect } from "../common/IndexedSelect";
+import { Input } from "../common/Input";
 import { notifyError, notifySuccess } from "../../utils/notify";
+import { useEffect, useId, useState } from "react";
 
 export function AddEditModal({
     endpoint,
@@ -79,8 +80,7 @@ export function AddEditModal({
                                         />
                                     )
                                     : (
-                                        <input
-                                            className="p-2 border border-gray-300 rounded-lg"
+                                        <Input
                                             type={property.type}
                                             name={property.name}
                                             placeholder={property.display}
