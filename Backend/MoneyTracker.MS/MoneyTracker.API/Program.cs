@@ -1,6 +1,7 @@
 namespace MoneyTracker.API;
 
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using FluentValidation;
 using MoneyTracker.API.Config;
 using MoneyTracker.API.Filters;
@@ -17,13 +18,13 @@ public class Program
     /// Main method of the API
     /// </summary>
     /// <param name="args"></param>
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
         builder.WebHost.UseKestrel(options => options.AddServerHeader = false);
 
-        var appSettings = builder.AddAppSettingsConfiguration();
+        var appSettings = await builder.AddAppSettingsConfiguration();
         builder.Services.AddSingleton<ApiConfiguration>();
 
         builder.Services
