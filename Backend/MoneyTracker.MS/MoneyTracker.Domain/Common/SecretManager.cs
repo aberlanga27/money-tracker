@@ -1,4 +1,4 @@
-namespace MoneyTracker.Domain.Utils;
+namespace MoneyTracker.Domain.Common;
 
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;

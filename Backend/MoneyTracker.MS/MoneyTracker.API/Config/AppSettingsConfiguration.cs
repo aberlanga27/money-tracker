@@ -3,7 +3,7 @@ namespace MoneyTracker.API.Config;
 using System.Diagnostics.CodeAnalysis;
 using dotenv.net;
 using MoneyTracker.Domain.Entities.Config;
-using MoneyTracker.Domain.Utils;
+using MoneyTracker.Domain.Common;
 
 /// <summary>
 /// AppSettings configuration
